@@ -1,0 +1,59 @@
+@page "/configuration"
+@using Microsoft.Extensions.Options
+@using MyTheFourth.Frontend.Constants
+@using MyTheFourth.Frontend.Configuration
+@using System.ComponentModel.DataAnnotations
+
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager navigationManager
+@inject IApiConfigurationServiceCollection apiConfigurationCollection
+
+<h1>Painel de configuração</h1>
+
+<p>Aqui você pode escolher modificar qual a api de backend que fornecer os dados.</p>
+
+<EditForm Model="Model" OnValidSubmit="Submit" FormName="SelectionBackend">
+    <div>
+        <ValidationSummary />
+        <DataAnnotationsValidator />
+        <label>
+            Backend Disponíveis:
+            <InputSelect @bind-Value="Model!.Id">
+                @foreach(var backend in options) {
+                    <option value="@backend.ServiceId">@backend.Name</option>
+                }
+            </InputSelect>
+        </label>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm]
+    public SelectionModel Model { get; set; } = new();
+
+    private List<ApiConfiguration> options = new();
+
+    protected override async Task OnInitializedAsync() {
+
+        options = apiConfigurationCollection.ListAllowedBackends().ToList();
+
+      Model.Id = await  localStorage.GetItemAsync<string>(LocalStoragePropertyNaming.BackendServiceDataName);
+    }
+
+    private async Task Submit()
+    {
+        await localStorage.SetItemAsync<string>(LocalStoragePropertyNaming.BackendServiceDataName, Model.Id!);
+
+            navigationManager.Refresh();
+    }
+
+    public class SelectionModel
+    {
+
+        [Required]
+        public string? Id { get; set; }
+    }
+}
