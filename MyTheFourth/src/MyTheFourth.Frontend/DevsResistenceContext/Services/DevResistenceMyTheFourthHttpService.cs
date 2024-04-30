@@ -8,13 +8,13 @@ using MyTheFourth.Frontend.Services.Interfaces;
 
 namespace MyTheFourth.Frontend.DevsResistenceContext.Services;
 
-public class MyTheFourthHttpService :
+public class DevResistenceMyTheFourthHttpService :
 IMyTheFourthService
 {
     private readonly HttpClient _client;
     private readonly IMapper _mapper;
 
-    public MyTheFourthHttpService(HttpClient client, IMapper mapper)
+    public DevResistenceMyTheFourthHttpService(HttpClient client, IMapper mapper)
     {
         _client = client;
         _mapper = mapper;

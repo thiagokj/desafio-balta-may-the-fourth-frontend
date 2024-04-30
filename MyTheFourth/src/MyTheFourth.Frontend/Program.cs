@@ -10,6 +10,7 @@ using MyTheFourth.Frontend.Constants;
 using MyTheFourth.Frontend.DependencyInjections;
 using MyTheFourth.Frontend.Services;
 using DevResistence = MyTheFourth.Frontend.DevsResistenceContext;
+using RebelRenegades = MyTheFourth.Frontend.RebelRenegadesContext;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -22,7 +23,8 @@ builder.Services.AddTransient<MyTheFourthHttpServiceFake>();
 builder.Services.AddTransient<MyTheFourthHttpServiceFake2>();
 
 builder.AddBackendProviders(assemblies: Assembly.GetExecutingAssembly())
-       .AddApi<DevResistence.Services.MyTheFourthHttpService>(BackendServicesIdentifiers.DevResistence);
+       .AddApi<DevResistence.Services.DevResistenceMyTheFourthHttpService>(BackendServicesIdentifiers.DevResistence)
+       .AddApi<RebelRenegades.Services.RebelRenegadesMyTheFourthHttpService>(BackendServicesIdentifiers.RebelRenegades);
 
 builder.Services.AddBlazoredLocalStorage(config =>
 {
