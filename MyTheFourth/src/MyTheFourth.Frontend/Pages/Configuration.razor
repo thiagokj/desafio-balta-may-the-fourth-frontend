@@ -1,6 +1,4 @@
 @page "/configuration"
-
-@using Microsoft.Extensions.Options
 @using MyTheFourth.Frontend.Constants
 @using MyTheFourth.Frontend.Configuration
 @using System.ComponentModel.DataAnnotations
@@ -8,6 +6,7 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject NavigationManager navigationManager
 @inject IApiConfigurationServiceCollection apiConfigurationCollection
+@inject ToastService ToastService
 
 <ModuleNavigation CurrentPage="Configurações" Module="EPagesNavigationsKey.Home" />
 
@@ -22,10 +21,7 @@
                     <EditForm Model="Model" OnValidSubmit="Submit" FormName="SelectionBackend">
                         <div class="mb-3">
                             <label for="" class="form-label">Apis Disponíveis:</label>
-                            <InputSelect
-                            class="form-select form-select-lg"
-                            @bind-Value="Model!.Id"
-                            >
+                            <InputSelect class="form-select form-select-lg" @bind-Value="Model.Id">
                                 @foreach(var backend in options) {
                                 <option value="@backend.ServiceId">@backend.Name</option>
                                 }
@@ -36,7 +32,6 @@
                         </div>
                     </EditForm>
                 </div>
-
             </div>
         </div>
     </div>
@@ -48,25 +43,31 @@
     public SelectionModel Model { get; set; } = new();
 
     private List<ApiConfiguration> options = new();
+    
 
-    protected override async Task OnInitializedAsync() {
-
+    protected override async Task OnInitializedAsync() { 
         options = apiConfigurationCollection.ListAllowedBackends().ToList();
 
-      Model.Id = await  localStorage.GetItemAsync<string>(LocalStoragePropertyNaming.BackendServiceDataName);
+        Model.Id = await  localStorage.GetItemAsync<string>(LocalStoragePropertyNaming.BackendServiceDataName);
     }
 
     private async Task Submit()
     {
         await localStorage.SetItemAsync<string>(LocalStoragePropertyNaming.BackendServiceDataName, Model.Id!);
 
-            navigationManager.Refresh();
+        Model.SelectedName = options.FirstOrDefault(o => o.ServiceId == Model.Id)!.Name;
+        
+        ToastService.Notify(new ToastMessage(ToastType.Success, $"Configurado Backend: {Model.SelectedName}. Aguarde..."));
+
+        await Task.Delay(3000);
+        
+        await Task.Run(() => navigationManager.Refresh());
     }
 
     public class SelectionModel
     {
-
         [Required]
         public string? Id { get; set; }
+        public string? SelectedName;
     }
 }
