@@ -1,6 +1,6 @@
 @inject IBreadcrumbItemServiceEvents BreadcrumbItemService
 
-<Breadcrumb Items="navItems" />
+<Breadcrumb Items="navItems"  class="mt-4 d-none d-md-block"/>
 
 @code {
     private List<BreadcrumbItem> navItems = new();
@@ -9,7 +9,7 @@
         
         BreadcrumbItemService.OnItemsChanged += UpdateItems;
     }
-        private  void UpdateItems(object sender, BreadcrumbItemsEventArgs e)
+        private  void UpdateItems(object? sender, BreadcrumbItemsEventArgs e)
         {
             navItems = e.Items?.ToList() ?? new();
 

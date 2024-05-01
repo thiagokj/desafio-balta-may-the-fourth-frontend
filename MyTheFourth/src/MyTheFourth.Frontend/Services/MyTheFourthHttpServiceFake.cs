@@ -27,68 +27,68 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
             Characters = [
                 new()
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "Kara Zor-El",
                 },
                 new()
                 {
-                    Id = 2,
+                    Id = "2",
                     Name = "Mara Jade",
                 },
                 new()
                 {
-                    Id = 3,
+                    Id = "3",
                     Name = "Thrawn",
                 },
                 new()
                 {
-                    Id = 4,
+                    Id = "4",
                     Name = "R2-D2",
                 }
             ],
             Planets = [
                 new()
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "Coruscant"
                 },
                 new()
                 {
-                    Id = 2,
+                    Id = "2",
                     Name = "Tatooine"
                 },
                 new()
                 {
-                    Id = 3,
+                    Id = "3",
                     Name = "Dagobah"
                 }
             ],
             Vehicles = [
                 new()
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "Speeder Bikes"
                 },
                 new()
                 {
-                    Id = 2,
+                    Id = "2",
                     Name = "AT-AT Walkers"
                 }
             ],
             Starships = [
                 new()
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "Millennium Falcon"
                 },
                 new()
                 {
-                    Id = 2,
+                    Id = "2",
                     Name = "X-wing"
                 },
                 new()
                 {
-                    Id = 3,
+                    Id = "3",
                     Name = "TIE Fighter"
                 }
             ]
@@ -98,7 +98,7 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
     private static Character[] _characters = [
         new()
         {
-            Id = 1,
+            Id = "1",
             Name = "Zara Kell",
             Height = "172 cm",
             Weight = "68 kg",
@@ -109,7 +109,7 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
             Gender = "female",
             Planet = new()
             {
-                Id = 1,
+                Id = "1",
                 Name = "Tatooine"
             },
             Movies = [
@@ -134,7 +134,7 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
     private static Planet[] _planets = [
         new()
         {
-            Id = 1,
+            Id = "1",
             Name = "Planetara",
             RotationPeriod = "24 hours",
             OrbitalPeriod = "365 days",
@@ -147,17 +147,17 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
             Characters = [
                 new()
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "Zara Kell",
                 },
                 new()
                 {
-                    Id = 2,
+                    Id = "2",
                     Name = "Tora Ziyal",
                 },
                 new()
                 {
-                    Id = 3,
+                    Id = "3",
                     Name = "Finn Varra",
                 }
             ],
@@ -183,7 +183,7 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
     private static Vehicle[] _vehicles = [
         new()
         {
-            Id = 1,
+            Id = "1",
             Name = "Star Voyager",
             ImgUrl = "",
             Model = "SV-2",
@@ -213,7 +213,7 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
     private static Starship[] _starships = [
         new()
         {
-            Id = 1,
+            Id = "1",
             Name = "Galactic Explorer",
             Slug = "galactic-explorer",
             ImgUrl = "/images/sample/starship-galactic-explorer.jpg",
@@ -261,7 +261,7 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
     {
         await Task.Delay(Random.Shared.Next(500, 5000));
 
-        return _characters.FirstOrDefault(x => x.Id == int.Parse(characterId));
+        return _characters.FirstOrDefault(x => x.Slug?.Equals(characterId) is true || x.Id.Equals(characterId));
     }
 
     public async Task<IEnumerable<Character>> ListCharactersAsync(int? page = null, int? pageSize = null)
@@ -275,7 +275,7 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
     {
         await Task.Delay(Random.Shared.Next(500, 5000));
 
-        return _planets.FirstOrDefault(x => x.Id == int.Parse(planetId));
+        return _planets.FirstOrDefault(x => x.Slug?.Equals(planetId) is true || x.Id.Equals(planetId));
     }
 
     public async Task<IEnumerable<Planet>> ListPlanetsAsync(int? page = null, int? pageSize = null)
@@ -289,7 +289,7 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
     {
         await Task.Delay(Random.Shared.Next(500, 5000));
 
-        return _vehicles.FirstOrDefault(x => x.Id == int.Parse(vehicleId));
+        return _vehicles.FirstOrDefault(x => x.Slug?.Equals(vehicleId) is true || x.Id.Equals(vehicleId));
     }
 
     public async Task<IEnumerable<Vehicle>> ListVehiclesAsync(int? page = null, int? pageSize = null)
@@ -303,7 +303,7 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
     {
         await Task.Delay(Random.Shared.Next(500, 5000));
 
-        return _starships.FirstOrDefault(x => x.Slug?.Equals(starshipId) is true || (int.TryParse(starshipId, out var id) && x.Id == id));
+        return _starships.FirstOrDefault(x => x.Slug?.Equals(starshipId) is true || x.Id.Equals(starshipId));
     }
 
     public async Task<IEnumerable<Starship>> ListStarshipsAsync(int? page = null, int? pageSize = null)

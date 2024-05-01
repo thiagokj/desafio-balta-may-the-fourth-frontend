@@ -17,7 +17,7 @@ public class Character : CharacterResume
 
     public string Gender { get; set; } = null!;
 
-    public PlanetResume Planet { get; set; } = null!;
+    public PlanetResume? Planet { get; set; } = null!;
 
     public List<MovieResume> Movies { get; set; }
 
