@@ -107,7 +107,7 @@
 }
 
 .theme__toggle {
-  background-color: hsl(48, 90%, 85%);
+  background-color: hsl(198, 90%, 55%);
   border-radius: 25% / 50%;
   box-shadow: 0 0 0 0.125em var(--primaryT);
   width: 4em;
@@ -118,7 +118,7 @@
 }
 
 .theme__toggle:before {
-  background-color: hsl(48, 90%, 55%);
+  background-color: hsl(198, 90%, 15%);
   border-radius: 50%;
   content: '';
   width: 2em;
@@ -132,7 +132,7 @@
 }
 
 .theme__toggle:checked {
-  background-color: hsl(198, 90%, 15%);
+  background-color: hsl(0, 90%, 15%);
 }
 
 .theme__toggle:checked:before,
@@ -141,11 +141,11 @@
 }
 
 .theme__toggle:checked:before {
-  background-color: hsl(198, 90%, 55%);
+  background-color: hsl(0, 90%, 55%);
 }
 
 .theme__toggle:checked ~ .theme__icon .theme__icon-part:nth-child(1) {
-  box-shadow: 0.2em -0.2em 0 0.2em hsl(198, 90%, 15%) inset;
+  box-shadow: 0.2em -0.2em 0 0.2em hsl(0, 90%, 15%) inset;
   top: calc(50% - 0.3em);
   left: calc(50% - 0.5em);
   transition: box-shadow var(--transDur) ease-in-out, opacity var(--transDur) ease-in-out, transform var(--transDur) ease-in-out;
