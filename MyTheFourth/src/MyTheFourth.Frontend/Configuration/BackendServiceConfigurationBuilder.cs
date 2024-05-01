@@ -1,4 +1,5 @@
 using MyTheFourth.Frontend.DependencyInjections;
+using MyTheFourth.Frontend.Extensions;
 using MyTheFourth.Frontend.Http.Handlers;
 using MyTheFourth.Frontend.Services.Interfaces;
 
