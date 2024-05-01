@@ -28,4 +28,10 @@
     <_ContentIncludedByDefault Remove="wwwroot\css\app.css" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.4\Microsoft.AspNetCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
