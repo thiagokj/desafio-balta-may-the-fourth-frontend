@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MyTheFourth.Frontend.Configuration;
+using MyTheFourth.Frontend.Extensions;
 using MyTheFourth.Frontend.Services.Interfaces;
 
 namespace MyTheFourth.Frontend.DependencyInjections;
