@@ -1,4 +1,3 @@
-using System.Numerics;
 using AutoMapper;
 using MyTheFourth.Frontend.Models;
 using MyTheFourth.Frontend.RebelRenegadesContext.Models;
@@ -36,6 +35,13 @@ public class MapperProfile : Profile
         CreateMap<PlanetDetails, Planet>()
         .IncludeBase<PlanetSummary, Planet>()
         .ForMember(dest => dest.Characters, opt => opt.MapFrom(src => src.Residents))
+        .ForMember(dest => dest.Movies, opt => opt.MapFrom(src => src.Films));
+
+        CreateMap<VehicleSummary, Vehicle>()
+        .IncludeBase<VehicleSummary, VehicleResume>();
+
+        CreateMap<VehicleDetails, Vehicle>()
+        .IncludeBase<VehicleSummary, Vehicle>()
         .ForMember(dest => dest.Movies, opt => opt.MapFrom(src => src.Films));
 
     }

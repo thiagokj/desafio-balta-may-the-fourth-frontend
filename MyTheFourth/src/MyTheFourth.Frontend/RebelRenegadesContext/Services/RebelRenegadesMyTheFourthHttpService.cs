@@ -102,9 +102,25 @@ IMyTheFourthService
         throw new NotImplementedException();
     }
 
-    public Task<Vehicle?> GetVehicleAsync(string vehicleId)
+    public async Task<Vehicle?> GetVehicleAsync(string vehicleId)
     {
-        throw new NotImplementedException();
+         if(!Guid.TryParse(vehicleId, out var guidId))
+            return await GetVehicleBySlugAsync(vehicleId);
+
+        var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.VehiclesEndpoint}/{guidId}");
+
+        var result = await response.GetContentData<ApiDataResponse<VehicleDetailsData>>();
+
+        return result?.Data?.DataItem is not null ? _mapper.Map<Vehicle>(result.Data!.DataItem) : default!;
+    }
+
+    private async Task<Vehicle?> GetVehicleBySlugAsync(string slug)
+    {
+       var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.VehiclesEndpoint}/slug/{slug}");
+
+        var result = await response.GetContentData<ApiDataResponse<VehicleDetailsData>>();
+
+        return result?.Data?.DataItem is not null ? _mapper.Map<Vehicle>(result.Data!.DataItem) : default!;
     }
 
     public async Task<IEnumerable<Character>> ListCharactersAsync(int? page = null, int? pageSize = null)
@@ -169,8 +185,22 @@ IMyTheFourthService
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<Vehicle>> ListVehiclesAsync(int? page = null, int? pageSize = null)
+    public async Task<IEnumerable<Vehicle>> ListVehiclesAsync(int? page = null, int? pageSize = null)
     {
-        throw new NotImplementedException();
+        try
+        {
+
+            var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.VehiclesEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
+
+            var result = await response.GetContentData<ApiDataResponse<VehiclesListData>>();
+
+            return result?.IsSuccess is true ? _mapper.Map<IEnumerable<Vehicle>>(result.Data!.DataItem!.Items) : Enumerable.Empty<Vehicle>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.StackTrace);
+
+        }
+        return Enumerable.Empty<Vehicle>();
     }
 }
