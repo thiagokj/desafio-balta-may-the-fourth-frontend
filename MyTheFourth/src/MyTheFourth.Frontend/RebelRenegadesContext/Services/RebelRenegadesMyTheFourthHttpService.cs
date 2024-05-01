@@ -97,11 +97,35 @@ IMyTheFourthService
         }
     }
 
-    public Task<Starship?> GetStarshipAsync(string starshipId)
-    {
-        throw new NotImplementedException();
+    public async Task<Starship?> GetStarshipAsync(string starshipId)
+     {
+        if(!Guid.TryParse(starshipId, out var guidId))
+            return await GetStarshipBySlugAsync(starshipId);
+
+        var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.StarshipsEndpoint}/{guidId}");
+
+        var result = await response.GetContentData<ApiDataResponse<StarshipDetailsData>>();
+
+        return result?.Data?.DataItem is not null ? _mapper.Map<Starship>(result.Data!.DataItem) : default!;
     }
 
+    private async Task<Starship?> GetStarshipBySlugAsync(string slug)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.StarshipsEndpoint}/slug/{slug}");
+
+            var result = await response.GetContentData<ApiDataResponse<StarshipDetailsData>>();
+
+            return result?.Data?.DataItem is not null ? _mapper.Map<Starship>(result.Data!.DataItem) : default!;
+            
+        }
+        catch (System.Exception ex)
+        {
+            Console.WriteLine(ex.StackTrace);   
+            throw;
+        }
+    }
     public async Task<Vehicle?> GetVehicleAsync(string vehicleId)
     {
          if(!Guid.TryParse(vehicleId, out var guidId))
@@ -180,9 +204,23 @@ IMyTheFourthService
         return Enumerable.Empty<Planet>();
     }
 
-    public Task<IEnumerable<Starship>> ListStarshipsAsync(int? page = null, int? pageSize = null)
+    public async Task<IEnumerable<Starship>> ListStarshipsAsync(int? page = null, int? pageSize = null)
     {
-        throw new NotImplementedException();
+        try
+        {
+
+            var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.StarshipsEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
+
+            var result = await response.GetContentData<ApiDataResponse<StarshipsListData>>();
+
+            return result?.IsSuccess is true ? _mapper.Map<IEnumerable<Starship>>(result.Data!.DataItem!.Items) : Enumerable.Empty<Starship>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.StackTrace);
+
+        }
+        return Enumerable.Empty<Starship>();
     }
 
     public async Task<IEnumerable<Vehicle>> ListVehiclesAsync(int? page = null, int? pageSize = null)

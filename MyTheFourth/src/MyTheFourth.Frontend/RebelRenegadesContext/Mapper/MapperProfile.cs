@@ -42,7 +42,16 @@ public class MapperProfile : Profile
 
         CreateMap<VehicleDetails, Vehicle>()
         .IncludeBase<VehicleSummary, Vehicle>()
-        .ForMember(dest => dest.Movies, opt => opt.MapFrom(src => src.Films));
+        .ForMember(dest => dest.Movies, opt => opt.MapFrom(src => src.Films))
+        .ForMember(dest => dest.Class, opt => opt.MapFrom(src => src.VehicleClass));
+
+        CreateMap<StarshipSummary, Starship>()
+        .IncludeBase<StarshipSummary, StarshipResume>();
+
+        CreateMap<StarshipDetails, Starship>()
+        .IncludeBase<StarshipSummary, Starship>()
+        .ForMember(dest => dest.Movies, opt => opt.MapFrom(src => src.Films))
+        .ForMember(dest => dest.Class, opt => opt.MapFrom(src => src.StarshipClass));
 
     }
 }
