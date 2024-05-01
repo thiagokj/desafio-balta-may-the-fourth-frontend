@@ -34,4 +34,3 @@ public class FilmDetails : FilmSummary
     [JsonPropertyName("planets")]
     public List<PlanetSummary> Planets { get; set; } = new();
 }
-    

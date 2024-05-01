@@ -37,7 +37,7 @@ IMyTheFourthService
 
     private async Task<Character?> GetCharacterBySlugAsync(string slug)
     {
-          var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.CharactersEndpoint}/slug/{slug}");
+        var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.CharactersEndpoint}/slug/{slug}");
 
         var result = await response.GetContentData<ApiDataResponse<FilmDetailsData>>();
 
@@ -49,7 +49,6 @@ IMyTheFourthService
 
         if(!Guid.TryParse(movieId, out var guidId))
             return await GetMovieBySlugAsync(movieId);
-
 
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.MoviesEndpoint}/{guidId}");
 
@@ -68,9 +67,34 @@ IMyTheFourthService
         return result?.Data?.DataItem is not null ? _mapper.Map<Movie>(result.Data!.DataItem) : default!;
     }
 
-    public Task<Planet?> GetPlanetAsync(string planetId)
+    public async Task<Planet?> GetPlanetAsync(string planetId)
     {
-        throw new NotImplementedException();
+        if(!Guid.TryParse(planetId, out var guidId))
+            return await GetPlanetBySlugAsync(planetId);
+
+        var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.PlanetsEndpoint}/{guidId}");
+
+        var result = await response.GetContentData<ApiDataResponse<PlanetDetailsData>>();
+
+        return result?.Data?.DataItem is not null ? _mapper.Map<Planet>(result.Data!.DataItem) : default!;
+    }
+
+    private async Task<Planet?> GetPlanetBySlugAsync(string slug)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.PlanetsEndpoint}/slug/{slug}");
+
+            var result = await response.GetContentData<ApiDataResponse<PlanetDetailsData>>();
+
+            return result?.Data?.DataItem is not null ? _mapper.Map<Planet>(result.Data!.DataItem) : default!;
+            
+        }
+        catch (System.Exception ex)
+        {
+            Console.WriteLine(ex.StackTrace);   
+            throw;
+        }
     }
 
     public Task<Starship?> GetStarshipAsync(string starshipId)
@@ -121,9 +145,23 @@ IMyTheFourthService
         return Enumerable.Empty<Movie>();
     }
 
-    public Task<IEnumerable<Planet>> ListPlanetsAsync(int? page = null, int? pageSize = null)
+    public async Task<IEnumerable<Planet>> ListPlanetsAsync(int? page = null, int? pageSize = null)
     {
-        throw new NotImplementedException();
+        try
+        {
+
+            var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.PlanetsEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
+
+            var result = await response.GetContentData<ApiDataResponse<PlanetsListData>>();
+
+            return result?.IsSuccess is true ? _mapper.Map<IEnumerable<Planet>>(result.Data!.DataItem!.Items) : Enumerable.Empty<Planet>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.StackTrace);
+
+        }
+        return Enumerable.Empty<Planet>();
     }
 
     public Task<IEnumerable<Starship>> ListStarshipsAsync(int? page = null, int? pageSize = null)
