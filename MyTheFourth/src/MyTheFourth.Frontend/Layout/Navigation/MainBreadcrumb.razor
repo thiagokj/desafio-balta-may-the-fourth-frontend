@@ -9,7 +9,7 @@
         
         BreadcrumbItemService.OnItemsChanged += UpdateItems;
     }
-        private  void UpdateItems(object sender, BreadcrumbItemsEventArgs e)
+        private  void UpdateItems(object? sender, BreadcrumbItemsEventArgs e)
         {
             navItems = e.Items?.ToList() ?? new();
 

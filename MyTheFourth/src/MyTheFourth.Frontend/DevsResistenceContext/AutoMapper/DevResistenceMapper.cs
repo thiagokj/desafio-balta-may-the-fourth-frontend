@@ -1,6 +1,7 @@
 using AutoMapper;
 using MyTheFourth.Frontend.DevsResistenceContext.Models;
 using MyTheFourth.Frontend.Models;
+using MyTheFourth.Frontend.RebelRenegadesContext.Models;
 
 namespace MyTheFourth.Frontend.DevsResistenceContext.AutoMapper;
 
