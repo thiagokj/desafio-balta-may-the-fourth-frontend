@@ -4,7 +4,7 @@ namespace MyTheFourth.Frontend.RebelRenegadesContext.Models;
 
 public class VehicleDetailsData : ResponseData<VehicleDetails>
 {
-   
+
     [JsonPropertyName("vehicleDetails")]
-    public override VehicleDetails? DataItem {get; set;}
+    public override VehicleDetails? DataItem { get; set; }
 }

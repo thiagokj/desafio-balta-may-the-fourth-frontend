@@ -7,10 +7,11 @@ public class PlanetDetailsData : ResponseData<PlanetDetails>
     [JsonPropertyName("planet")]
     public PlanetDetails? DetailItem { get; set; }
 
-    public override PlanetDetails? DataItem {
+    public override PlanetDetails? DataItem
+    {
         get => DetailItem ?? SlugItem;
         set => DetailItem = value;
     }
     [JsonPropertyName("planetDetails")]
-    public PlanetDetails? SlugItem { get; set; } 
+    public PlanetDetails? SlugItem { get; set; }
 }

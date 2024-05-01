@@ -109,7 +109,7 @@ Maiores laborum dolores dolorem neque suscipit excepturi animi vitae porro nemo 
             Gender = "female",
             Planet = new()
             {
-                Id ="1",
+                Id = "1",
                 Name = "Tatooine"
             },
             Movies = [

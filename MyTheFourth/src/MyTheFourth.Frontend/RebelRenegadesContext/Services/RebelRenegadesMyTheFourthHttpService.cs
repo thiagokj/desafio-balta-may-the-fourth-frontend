@@ -24,7 +24,7 @@ IMyTheFourthService
 
     public async Task<Character?> GetCharacterAsync(string characterId)
     {
-        if(!Guid.TryParse(characterId, out var guidId))
+        if (!Guid.TryParse(characterId, out var guidId))
             return await GetCharacterBySlugAsync(characterId);
 
 
@@ -47,7 +47,7 @@ IMyTheFourthService
     public async Task<Movie?> GetMovieAsync(string movieId)
     {
 
-        if(!Guid.TryParse(movieId, out var guidId))
+        if (!Guid.TryParse(movieId, out var guidId))
             return await GetMovieBySlugAsync(movieId);
 
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.MoviesEndpoint}/{guidId}");
@@ -59,7 +59,7 @@ IMyTheFourthService
 
     private async Task<Movie?> GetMovieBySlugAsync(string slug)
     {
-        
+
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.MoviesEndpoint}/slug/{slug}");
 
         var result = await response.GetContentData<ApiDataResponse<FilmDetailsData>>();
@@ -69,7 +69,7 @@ IMyTheFourthService
 
     public async Task<Planet?> GetPlanetAsync(string planetId)
     {
-        if(!Guid.TryParse(planetId, out var guidId))
+        if (!Guid.TryParse(planetId, out var guidId))
             return await GetPlanetBySlugAsync(planetId);
 
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.PlanetsEndpoint}/{guidId}");
@@ -88,18 +88,18 @@ IMyTheFourthService
             var result = await response.GetContentData<ApiDataResponse<PlanetDetailsData>>();
 
             return result?.Data?.DataItem is not null ? _mapper.Map<Planet>(result.Data!.DataItem) : default!;
-            
+
         }
         catch (System.Exception ex)
         {
-            Console.WriteLine(ex.StackTrace);   
+            Console.WriteLine(ex.StackTrace);
             throw;
         }
     }
 
     public async Task<Starship?> GetStarshipAsync(string starshipId)
-     {
-        if(!Guid.TryParse(starshipId, out var guidId))
+    {
+        if (!Guid.TryParse(starshipId, out var guidId))
             return await GetStarshipBySlugAsync(starshipId);
 
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.StarshipsEndpoint}/{guidId}");
@@ -118,17 +118,17 @@ IMyTheFourthService
             var result = await response.GetContentData<ApiDataResponse<StarshipDetailsData>>();
 
             return result?.Data?.DataItem is not null ? _mapper.Map<Starship>(result.Data!.DataItem) : default!;
-            
+
         }
         catch (System.Exception ex)
         {
-            Console.WriteLine(ex.StackTrace);   
+            Console.WriteLine(ex.StackTrace);
             throw;
         }
     }
     public async Task<Vehicle?> GetVehicleAsync(string vehicleId)
     {
-         if(!Guid.TryParse(vehicleId, out var guidId))
+        if (!Guid.TryParse(vehicleId, out var guidId))
             return await GetVehicleBySlugAsync(vehicleId);
 
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.VehiclesEndpoint}/{guidId}");
@@ -140,7 +140,7 @@ IMyTheFourthService
 
     private async Task<Vehicle?> GetVehicleBySlugAsync(string slug)
     {
-       var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.VehiclesEndpoint}/slug/{slug}");
+        var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.VehiclesEndpoint}/slug/{slug}");
 
         var result = await response.GetContentData<ApiDataResponse<VehicleDetailsData>>();
 
