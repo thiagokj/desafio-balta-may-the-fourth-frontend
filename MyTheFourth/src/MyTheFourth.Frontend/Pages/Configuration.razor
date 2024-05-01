@@ -9,27 +9,39 @@
 @inject NavigationManager navigationManager
 @inject IApiConfigurationServiceCollection apiConfigurationCollection
 
-<h1>Painel de configuração</h1>
+<ModuleNavigation CurrentPage="Configurações" Module="EPagesNavigationsKey.Home" />
 
-<p>Aqui você pode escolher modificar qual a api de backend que fornecer os dados.</p>
+<section class="team-single">
+    <div class="row">
+        <div class="col">
+            <div class="team-single-text padding-50px-left sm-no-padding-left">
+                <h1 class="font-size38 sm-font-size32 xs-font-size30">Painel de configuração</h1>
 
-<EditForm Model="Model" OnValidSubmit="Submit" FormName="SelectionBackend">
-    <div>
-        <ValidationSummary />
-        <DataAnnotationsValidator />
-        <label>
-            Backend Disponíveis:
-            <InputSelect @bind-Value="Model!.Id">
-                @foreach(var backend in options) {
-                    <option value="@backend.ServiceId">@backend.Name</option>
-                }
-            </InputSelect>
-        </label>
+                <p>Aqui você pode escolher modificar qual a api de backend que fornecer os dados.</p>
+                <div class="contact-info-section margin-40px-tb mt-4">
+                    <EditForm Model="Model" OnValidSubmit="Submit" FormName="SelectionBackend">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Apis Disponíveis:</label>
+                            <InputSelect
+                            class="form-select form-select-lg"
+                            @bind-Value="Model!.Id"
+                            >
+                                @foreach(var backend in options) {
+                                <option value="@backend.ServiceId">@backend.Name</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success float-right">Salvar</button>
+                        </div>
+                    </EditForm>
+                </div>
+
+            </div>
+        </div>
     </div>
-    <div>
-        <button type="submit">Submit</button>
-    </div>
-</EditForm>
+</section>
+
 
 @code {
     [SupplyParameterFromForm]
