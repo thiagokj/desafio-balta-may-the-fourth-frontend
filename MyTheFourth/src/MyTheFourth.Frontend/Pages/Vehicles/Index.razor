@@ -3,6 +3,8 @@
 @inject IVehiclesService VehiclesService
 @attribute [StreamRendering]
 
+<ModuleNavigation CurrentPage="Veículos" Module="EPagesNavigationsKey.Home" />
+
 @if(Vehicles == null) 
 {
     <StarWarsLoader Text="Carregando..." />
@@ -10,9 +12,16 @@
 else 
 {
     <Catalog>
-        @foreach (var vehicle in Vehicles) 
-        {
-            <CatalogDetail ImgUrl="@vehicle.ImgUrl" Name="@vehicle.Name" Link="@($"vehicles/{vehicle.Slug ?? vehicle.Id.ToString()}")"/>
+        @{
+            if (Vehicles == null || !Vehicles.Any())
+                @Constants.ErrorMessages.NoContent
+            else
+            {
+                foreach (var vehicle in Vehicles) 
+                {
+                    <CatalogDetail ImgUrl="@vehicle.ImgUrl" Name="@vehicle.Name" Link="@($"vehicles/{vehicle.Slug ?? vehicle.Id.ToString()}")"/>
+                }
+            }
         }
     </Catalog>
 }

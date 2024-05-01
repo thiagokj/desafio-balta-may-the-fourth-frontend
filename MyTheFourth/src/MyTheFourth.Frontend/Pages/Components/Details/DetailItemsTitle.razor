@@ -9,12 +9,13 @@
         </div>
     </div>
 </li>
+<p/>
 
 @code {
 
     [Parameter]
     [EditorRequired]
-    public string LabelName { get; set; }
+    public string? LabelName { get; set; }
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 

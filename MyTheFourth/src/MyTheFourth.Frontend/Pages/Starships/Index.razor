@@ -3,6 +3,8 @@
 @inject IStarshipsService StarshipsService
 @attribute [StreamRendering]
 
+<ModuleNavigation CurrentPage="Naves" Module="EPagesNavigationsKey.Home" />
+
 @if(Starships == null) 
 {
     <StarWarsLoader Text="Carregando..." />
@@ -10,9 +12,16 @@
 else 
 {
     <Catalog>
-        @foreach (var starship in Starships) 
-        {
-            <CatalogDetail ImgUrl="@starship.ImgUrl" Name="@starship.Name" Link="@($"starships/{starship.Slug ?? starship.Id.ToString()}")"/>
+        @{            
+            if (Starships == null || !Starships.Any())
+                @Constants.ErrorMessages.NoContent
+            else
+            {
+                @foreach (var starship in Starships) 
+                {
+                    <CatalogDetail ImgUrl="@starship.ImgUrl" Name="@starship.Name" Link="@($"starships/{starship.Slug ?? starship.Id.ToString()}")"/>
+                }
+            }
         }
     </Catalog>
 }
