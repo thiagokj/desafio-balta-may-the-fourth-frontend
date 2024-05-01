@@ -22,9 +22,26 @@ IMyTheFourthService
 
     public string ServiceId => BackendServicesIdentifiers.RebelRenegades;
 
-    public Task<Character?> GetCharacterAsync(string characterId)
+    public async Task<Character?> GetCharacterAsync(string characterId)
     {
-        throw new NotImplementedException();
+        if(!Guid.TryParse(characterId, out var guidId))
+            return await GetCharacterBySlugAsync(characterId);
+
+
+        var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.MoviesEndpoint}/{guidId}");
+
+        var result = await response.GetContentData<ApiDataResponse<PersonDetailsData>>();
+
+        return result?.Data?.DataItem is not null ? _mapper.Map<Character>(result.Data!.DataItem) : default!;
+    }
+
+    private async Task<Character?> GetCharacterBySlugAsync(string slug)
+    {
+          var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.CharactersEndpoint}/slug/{slug}");
+
+        var result = await response.GetContentData<ApiDataResponse<FilmDetailsData>>();
+
+        return result?.Data?.DataItem is not null ? _mapper.Map<Character>(result.Data!.DataItem) : default!;
     }
 
     public async Task<Movie?> GetMovieAsync(string movieId)
@@ -66,9 +83,23 @@ IMyTheFourthService
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<Character>> ListCharactersAsync(int? page = null, int? pageSize = null)
+    public async Task<IEnumerable<Character>> ListCharactersAsync(int? page = null, int? pageSize = null)
     {
-        throw new NotImplementedException();
+        try
+        {
+
+            var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.CharactersEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
+
+            var result = await response.GetContentData<ApiDataResponse<PeopleListData>>();
+
+            return result?.IsSuccess is true ? _mapper.Map<IEnumerable<Character>>(result.Data!.DataItem!.Items) : Enumerable.Empty<Character>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.StackTrace);
+
+        }
+        return Enumerable.Empty<Character>();
     }
 
     public async Task<IEnumerable<Movie>> ListMoviesAsync(int? page = null, int? pageSize = null)

@@ -29,8 +29,9 @@ public class FilmDetails : FilmSummary
     public List<VehicleSummary> Vehicles { get; set; } = new();
 
     [JsonPropertyName("characters")]
-    public List<CharacterSummary> Characters { get; set; } = new();
+    public List<PersonSummary> Characters { get; set; } = new();
 
     [JsonPropertyName("planets")]
     public List<PlanetSummary> Planets { get; set; } = new();
 }
+    

@@ -8,7 +8,7 @@ public class MapperProfile : Profile
     {
         CreateMap<FilmSummary, MovieResume>();
 
-        CreateMap<CharacterSummary, CharacterResume>();
+        CreateMap<PersonSummary, CharacterResume>();
 
         CreateMap<PlanetSummary, PlanetResume>();
 
@@ -21,6 +21,12 @@ public class MapperProfile : Profile
 
         CreateMap<FilmDetails, Movie>()
         .IncludeBase<FilmSummary, Movie>();
+
+        CreateMap<PersonSummary, Character>()
+        .IncludeBase<PersonSummary, CharacterResume>();
+
+        CreateMap<PersonDetails, Character>()
+        .IncludeBase<PersonSummary, Character>();
 
     }
 }

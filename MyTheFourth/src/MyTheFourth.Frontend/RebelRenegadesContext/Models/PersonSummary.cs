@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace MyTheFourth.Frontend.RebelRenegadesContext.Models;
 
-public class CharacterSummary
+public class PersonSummary
 {
     [JsonPropertyName("id")]
     public string Id { get; set; } = null!;
