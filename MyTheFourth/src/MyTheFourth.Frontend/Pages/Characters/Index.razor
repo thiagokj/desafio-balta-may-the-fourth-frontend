@@ -1,12 +1,11 @@
 ﻿@page "/characters"
-@using MyTheFourth.Frontend.Pages.Components.Pagination;
 
 @inject ICharactersService CharactersService
 @attribute [StreamRendering]
 
 <ModuleNavigation CurrentPage="Personagens" Module="EPagesNavigationsKey.Home" />
 
-@if(Characters == null)
+@if (Characters == null)
 {
     <StarWarsLoader Text="Carregando..." />
 }
@@ -18,34 +17,23 @@ else
                 @Constants.ErrorMessages.NoContent
             else
             {
-                @foreach (var character in Characters) 
+                @foreach (var character in Characters)
                 {
-                    <CatalogDetail ImgUrl="@character.ImgUrl" Name="@character.Name" Link="@($"characters/{character.Slug ?? character.Id.ToString()}")"/>
+                    <CatalogDetail ImgUrl="@character.ImgUrl" Name="@character.Name" Link="@($"characters/{character.Slug ?? character.Id.ToString()}")" />
                 }
             }
         }
     </Catalog>
 
-    <div>
-        <input type="button" class="btn-lg btn" id="prev" @onclick="PrevPage" value="Previous" />
+    <Pagination ActivePageNumber="@CurPage"
+                TotalPages="15"
+                PageChanged="OnPageChangedAsync"
+                DisplayPages="5"
+                FirstLinkIcon="IconName.ChevronDoubleLeft"
+                PreviousLinkIcon="IconName.ChevronLeft"
+                NextLinkIcon="IconName.ChevronRight"
+                LastLinkIcon="IconName.ChevronDoubleRight" />
 
-        @for (int i = CurPage - 2; i <= CurPage + 2; i++)
-        {
-            int j = i;
-            @if (i > 0)
-            {
-                @if (i == CurPage)
-                {
-                    <span class="px-2" style="font-weight: bold; cursor:pointer" @onclick="() => ShowPage(j)">@i</span>
-                }
-                else
-                {
-                    <span class="px-2" style="cursor:pointer" @onclick="() => ShowPage(j)">@i</span>
-                }
-            }
-        }
-        <input type="button" class="btn-lg btn" id="next" @onclick="NextPage" value="Next" />
-    </div>
 }
 
 @code {
@@ -57,29 +45,15 @@ else
         await ShowPage();
     }
 
-    protected async Task NextPage()
-    {
-        CurPage++;
-        await ShowPage();
-    }
-
-    protected async Task ShowPage(int i)
-    {
-        CurPage = i;
-        await ShowPage();
-    }
-
-    protected async Task PrevPage()
-    {
-        if (CurPage > 1)
-        {
-            CurPage--;
-            await ShowPage();
-        }
-    }
-
     protected async Task ShowPage()
     {
         Characters = await CharactersService.ListCharactersAsync(CurPage);
+    }
+
+    private async Task OnPageChangedAsync(int newPageNumber)
+    {
+        await Task.Run(() => { CurPage = newPageNumber; });
+        await ShowPage();
+        return;
     }
 }

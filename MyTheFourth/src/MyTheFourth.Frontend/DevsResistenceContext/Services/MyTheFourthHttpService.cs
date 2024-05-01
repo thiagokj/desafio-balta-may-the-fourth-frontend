@@ -69,7 +69,7 @@ IMyTheFourthService
         return result is not null ? _mapper.Map<Vehicle>(result) : default!;
     }
 
-    public async Task<IEnumerable<Character>> ListCharactersAsync(int? page = null, int? pageSize = null)
+    public async Task<IEnumerable<Character>> ListCharactersAsync(int? page, int? pageSize)
     {
         try
         {
@@ -88,11 +88,10 @@ IMyTheFourthService
         return Enumerable.Empty<Character>();
     }
 
-    public async Task<IEnumerable<Movie>> ListMoviesAsync(int? page = null, int? pageSize = null)
+    public async Task<IEnumerable<Movie>> ListMoviesAsync(int? page, int? pageSize)
     {
         try
         {
-
             var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.MoviesEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
 
             var result = await response.GetContentData<MovieListResponse>();
@@ -107,7 +106,7 @@ IMyTheFourthService
         return Enumerable.Empty<Movie>();
     }
 
-    public async Task<IEnumerable<Planet>> ListPlanetsAsync(int? page = null, int? pageSize = null)
+    public async Task<IEnumerable<Planet>> ListPlanetsAsync(int? page, int? pageSize)
     {
         try
         {
@@ -126,7 +125,7 @@ IMyTheFourthService
         return Enumerable.Empty<Planet>();
     }
 
-    public async Task<IEnumerable<Starship>> ListStarshipsAsync(int? page = null, int? pageSize = null)
+    public async Task<IEnumerable<Starship>> ListStarshipsAsync(int? page, int? pageSize)
     {
         try
         {
@@ -145,7 +144,7 @@ IMyTheFourthService
         return Enumerable.Empty<Starship>();
     }
 
-    public async Task<IEnumerable<Vehicle>> ListVehiclesAsync(int? page = null, int? pageSize = null)
+    public async Task<IEnumerable<Vehicle>> ListVehiclesAsync(int? page, int? pageSize)
     {
         try
         {
