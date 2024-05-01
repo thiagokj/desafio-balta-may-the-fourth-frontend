@@ -39,7 +39,7 @@ IMyTheFourthService
     {
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.CharactersEndpoint}/slug/{slug}");
 
-        var result = await response.GetContentData<ApiDataResponse<FilmDetailsData>>();
+        var result = await response.GetContentData<ApiDataResponse<PersonDetailsData>>();
 
         return result?.Data?.DataItem is not null ? _mapper.Map<Character>(result.Data!.DataItem) : default!;
     }

@@ -26,8 +26,9 @@ public class MapperProfile : Profile
         .IncludeBase<PersonSummary, CharacterResume>();
 
         CreateMap<PersonDetails, Character>()
+        .IncludeBase<PersonSummary, Character>()
         .ForMember(dest => dest.Movies, opt => opt.MapFrom(src => src.Films))
-        .IncludeBase<PersonSummary, Character>();
+        .ForMember(dest => dest.Planet, opt => opt.MapFrom(src => src.Homeworld));
 
         CreateMap<PlanetSummary, Planet>()
         .IncludeBase<PlanetSummary, PlanetResume>();
