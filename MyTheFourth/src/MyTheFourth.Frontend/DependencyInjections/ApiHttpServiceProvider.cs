@@ -1,4 +1,5 @@
 using MyTheFourth.Frontend.Configuration;
+using MyTheFourth.Frontend.Constants;
 using MyTheFourth.Frontend.Services.Interfaces;
 
 namespace MyTheFourth.Frontend.DependencyInjections;
@@ -8,10 +9,10 @@ public class ApiHttpServiceProvider : IBackendServiceProvider
     private readonly IServiceProvider _serviceProvider;
     private string _currentServiceId = null!;
 
-    public ApiHttpServiceProvider(IServiceProvider serviceProvider, string currentServiceId)
+    public ApiHttpServiceProvider(IServiceProvider serviceProvider, string?  currentServiceId = BackendServicesIdentifiers.DevResistence)
     {
         _serviceProvider = serviceProvider;
-        _currentServiceId = currentServiceId;
+        _currentServiceId = currentServiceId!;
     }
 
     public IMyTheFourthService? Current => GetCurrentService();
