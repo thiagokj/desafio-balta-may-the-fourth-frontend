@@ -1,14 +1,13 @@
 using AutoMapper;
 using MyTheFourth.Frontend.DevsResistenceContext.Models;
 using MyTheFourth.Frontend.Models;
-using MyTheFourth.Frontend.RebelRenegadesContext.Models;
 
 namespace MyTheFourth.Frontend.DevsResistenceContext.AutoMapper;
 
-public class DevResistenceMapper : Profile
+public class DevsResistenceMapperProfile : Profile
 {
 
-    public DevResistenceMapper()
+    public DevsResistenceMapperProfile()
     {
 
         CreateMap<MovieDataModel, MovieResume>()

@@ -2,9 +2,9 @@ using AutoMapper;
 using MyTheFourth.Frontend.Models;
 using MyTheFourth.Frontend.RebelRenegadesContext.Models;
 
-public class MapperProfile : Profile
+public class RebelRenegadesMapperProfile : Profile
 {
-    public MapperProfile()
+    public RebelRenegadesMapperProfile()
     {
         CreateMap<FilmSummary, MovieResume>();
 
