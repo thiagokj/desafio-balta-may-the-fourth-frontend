@@ -31,7 +31,7 @@ public class Planet : PlanetResume
         Movies = new List<MovieResume>();
     }
 
-    public static Planet FromPlanetDataModel(PlanetDataModel? planetDataModel)
+    public static Planet? FromPlanetDataModel(PlanetDataModel? planetDataModel)
     {
         if (planetDataModel == null) return null;
 
