@@ -1,3 +1,5 @@
+using MyTheFourth.Frontend.DevsResistenceContext.Models;
+
 namespace MyTheFourth.Frontend.Models;
 
 public class Character : CharacterResume
@@ -24,5 +26,29 @@ public class Character : CharacterResume
     public Character()
     {
         Movies = new List<MovieResume>();
+    }
+
+
+    public static Character ConverterCharacter (CharacterDataModel result)
+    {
+        Character character = new Character
+        {
+            Height = result.Height, 
+            Weight = result.Weight,
+            HairColor = result.HairColor,
+            SkinColor = result.SkinColor,
+            EyeColor = result.EyeColor,
+            BirthYear = result.BirthYear,
+            Gender = result.Gender,
+            Planet = new PlanetResume
+            {
+                Id = result.Planet.Name
+            },
+            Movies = result.Movies.Select(movie => new MovieResume
+            {
+                Title = movie.Title
+            }).ToList()
+        };
+        return character;
     }
 }

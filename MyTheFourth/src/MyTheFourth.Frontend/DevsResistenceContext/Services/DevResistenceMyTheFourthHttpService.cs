@@ -27,8 +27,10 @@ IMyTheFourthService
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.CharacterEndpoint}/{characterId}");
 
         var result = await response.GetContentData<CharacterDataModel>();
+        
+       var character = Character.ConverterCharacter(result);
 
-        return result is not null ? _mapper.Map<Character>(result) : default!;
+        return result is not null ? character : default!;
     }
 
     public async Task<Movie?> GetMovieAsync(string movieId)
