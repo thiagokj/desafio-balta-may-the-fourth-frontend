@@ -27,10 +27,13 @@ IMyTheFourthService
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.CharacterEndpoint}/{characterId}");
 
         var result = await response.GetContentData<CharacterDataModel>();
-        
-       var character = Character.ConverterCharacter(result);
 
-        return result is not null ? character : default!;
+        if (result is null)
+            return new Character();
+
+        var character = Character.ConvertCharacter(result);
+
+        return character;
     }
 
     public async Task<Movie?> GetMovieAsync(string movieId)
@@ -79,8 +82,12 @@ IMyTheFourthService
 
             var result = await response.GetContentData<CharacterListResponse>();
 
-            return result?.Results?.Any() is true ? _mapper.Map<IEnumerable<Character>>(result.Results) : Enumerable.Empty<Character>();
+            if (result is null)
+                return new List<Character>();
 
+            var character = Character.ConvertListCharacter(result);
+
+            return character;
         }
         catch (Exception ex)
         {
