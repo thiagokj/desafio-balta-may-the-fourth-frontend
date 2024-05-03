@@ -46,7 +46,9 @@ IMyTheFourthService
 
         var result = await response.GetContentData<PlanetDataModel>();
 
-        return result is not null ? _mapper.Map<Planet>(result) : default!;
+        var planet = Planet.FromPlanetDataModel(result);
+
+        return result is not null ? planet : default!;
 
     }
 
