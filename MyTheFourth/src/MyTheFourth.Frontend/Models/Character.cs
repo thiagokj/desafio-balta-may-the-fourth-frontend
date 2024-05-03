@@ -64,7 +64,7 @@ public class Character : CharacterResume
         return character;
     }
 
-
+    //Mapeando como Response.
     public static CharacterListResponse ConvertListResponseCharacter(CharacterListResponse result)
     {
         if (result.Results != null)
@@ -117,7 +117,8 @@ public class Character : CharacterResume
                     Id = item.Id.ToString(),
                     Planet = new PlanetResume
                     {
-                        Id = item.Planet.Name,
+                        Id = item.Planet.Id.ToString(),
+                        Name = item.Planet.Name,
                         //Slug = item.Planet.Slug,
                         //ImgUrl = item.Planet.ImgUrl,
                     },
