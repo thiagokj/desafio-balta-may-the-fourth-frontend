@@ -1,3 +1,5 @@
+using MyTheFourth.Frontend.DevsResistenceContext.Models;
+
 namespace MyTheFourth.Frontend.Models;
 
 public class Planet : PlanetResume
@@ -27,5 +29,32 @@ public class Planet : PlanetResume
     {
         Characters = new List<CharacterResume>();
         Movies = new List<MovieResume>();
+    }
+
+    public static Planet FromPlanetDataModel(PlanetDataModel? planetDataModel)
+    {
+        if (planetDataModel == null) return null;
+
+        var planet = new Planet
+        {
+            RotationPeriod = planetDataModel.RotationPeriod,
+            OrbitalPeriod = planetDataModel.OrbitalPeriod,
+            Diameter = planetDataModel.Diameter,
+            Climate = planetDataModel.Climate,
+            Gravity = planetDataModel.Gravity,
+            Terrain = planetDataModel.Terrain,
+            SurfaceWater = planetDataModel.SurfaceWater,
+            Population = planetDataModel.Population,
+            Characters = planetDataModel.Characters?.Select(c => new CharacterResume
+            {
+                Name = c.Name 
+            }).ToList() ?? new List<CharacterResume>(),
+            Movies = planetDataModel.Movies?.Select(m => new MovieResume
+            {
+                Title = m.Title 
+            }).ToList() ?? new List<MovieResume>()
+        };
+
+        return planet;
     }
 }
