@@ -31,30 +31,108 @@ public class Planet : PlanetResume
         Movies = new List<MovieResume>();
     }
 
-    public static Planet? FromPlanetDataModel(PlanetDataModel? planetDataModel)
+    public static Planet? ConvertPlanet(PlanetDataModel? result)
     {
-        if (planetDataModel == null) return null;
-
-        var planet = new Planet
+        Planet planet = new Planet
         {
-            RotationPeriod = planetDataModel.RotationPeriod,
-            OrbitalPeriod = planetDataModel.OrbitalPeriod,
-            Diameter = planetDataModel.Diameter,
-            Climate = planetDataModel.Climate,
-            Gravity = planetDataModel.Gravity,
-            Terrain = planetDataModel.Terrain,
-            SurfaceWater = planetDataModel.SurfaceWater,
-            Population = planetDataModel.Population,
-            Characters = planetDataModel.Characters?.Select(c => new CharacterResume
+            Id = result.Id.ToString(),
+            RotationPeriod = result.RotationPeriod,
+            OrbitalPeriod = result.OrbitalPeriod,
+            Diameter = result.Diameter,
+            Climate = result.Climate,
+            Gravity = result.Gravity,
+            Terrain = result.Terrain,
+            SurfaceWater = result.SurfaceWater,
+            Population = result.Population,
+            Characters = result.Characters?.Select(c => new CharacterResume
             {
-                Name = c.Name 
+                Id = c.Id.ToString(),
+                Name = c.Name
             }).ToList() ?? new List<CharacterResume>(),
-            Movies = planetDataModel.Movies?.Select(m => new MovieResume
+            Movies = result.Movies?.Select(m => new MovieResume
             {
-                Title = m.Title 
+                Id = m.Id.ToString(),
+                Title = m.Title
             }).ToList() ?? new List<MovieResume>()
         };
-
         return planet;
+    }
+    
+    //Mapeando como Response.
+    public static PlanetListResponse ConvertListResponseCharacter(PlanetListResponse result)
+    {
+        if (result.Results != null)
+        {
+            var planet = result.Results.Select(item => new PlanetDataModel()
+            {
+
+                Id = item.Id,
+                Name = item.Name,
+                RotationPeriod = item.RotationPeriod,
+                OrbitalPeriod = item.OrbitalPeriod,
+                Diameter = item.Diameter,
+                Climate = item.Climate,
+                Gravity = item.Gravity,
+                Terrain = item.Terrain,
+                SurfaceWater = item.SurfaceWater,
+                Population = item.Population,
+                Characters = item
+                    .Characters
+                    .Select(c => new CharacterDataModel
+                    {
+                        Id = c.Id,
+                        Name = c.Name
+                    }).ToList(),
+                Movies = item
+                    .Movies
+                    .Select(m => new MovieDataModel
+                    {
+                        Id = m.Id, 
+                        Title = m.Title, 
+                    }).ToList()
+            }).ToList();
+            
+            var res = new PlanetListResponse();
+            res.Count = result.Count;
+            res.PageNumber = result.PageNumber;
+            res.PageSize = result.PageSize;
+            res.Results = planet;
+
+            return res;
+        }
+        return new PlanetListResponse();
+    }
+
+    public static List<Planet> ConvertListPlanet(PlanetListResponse result)
+    {
+        if (result.Results != null)
+        {
+            var planet = result.Results.Select(item => new Planet
+                {
+                    Id = item.Id.ToString(),
+                    Name = item.Name,
+                    RotationPeriod = item.RotationPeriod,
+                    OrbitalPeriod = item.OrbitalPeriod,
+                    Diameter = item.Diameter,
+                    Climate = item.Climate,
+                    Gravity = item.Gravity,
+                    Terrain = item.Terrain,
+                    SurfaceWater = item.SurfaceWater,
+                    Population = item.Population,
+                    Characters = item.Characters.Select(c => new CharacterResume
+                    {
+                        Id = c.Id.ToString(),
+                        Name = c.Name
+                    }).ToList(),
+                    Movies = item.Movies.Select(m => new MovieResume
+                    {
+                        Id = m.Id.ToString(),
+                        Title = m.Title
+                    }).ToList(),
+                }).ToList();
+
+            return planet;
+        }
+        return new List<Planet>();
     }
 }

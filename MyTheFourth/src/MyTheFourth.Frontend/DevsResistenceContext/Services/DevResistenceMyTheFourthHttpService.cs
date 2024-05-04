@@ -51,10 +51,9 @@ IMyTheFourthService
 
         var result = await response.GetContentData<PlanetDataModel>();
 
-        var planet = Planet.FromPlanetDataModel(result);
+        var planet = Planet.ConvertPlanet(result);
 
-        return result is not null ? planet : default!;
-
+        return planet;
     }
 
     public async Task<Starship?> GetStarshipAsync(string starshipId)
@@ -125,8 +124,9 @@ IMyTheFourthService
 
             var result = await response.GetContentData<PlanetListResponse>();
 
-            return result?.Results?.Any() is true ? _mapper.Map<IEnumerable<Planet>>(result.Results) : Enumerable.Empty<Planet>();
+            var planet = Planet.ConvertListPlanet(result);
 
+            return planet;
         }
         catch (Exception ex)
         {
