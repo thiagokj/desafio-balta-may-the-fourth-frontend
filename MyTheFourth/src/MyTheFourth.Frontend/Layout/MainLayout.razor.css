@@ -1,3 +1,30 @@
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.navbar {
+  height: auto; 
+  margin-bottom: auto;
+}
+
+.footer {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+}
+
 .stars {
   background-repeat: repeat;
   position: absolute;
@@ -106,3 +133,4 @@
     540px 136px #fff, 1598px 1738px #fff, 282px 717px #fff, 1985px 1776px #fff, 1208px 761px #fff, 1249px 1436px #fff, 667px 1797px #fff,
     1563px 698px #fff, 1158px 1859px #fff, 242px 212px #fff, 445px 1286px #fff, 1943px 950px #fff, 268px 819px #fff, 729px 1755px #fff;
 }
+
