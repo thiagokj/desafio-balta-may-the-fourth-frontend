@@ -1,0 +1,11 @@
+﻿@media (min-width: 576px) {
+    .nav-item-text {
+        display: none !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .nav-item-text {
+        display: inline !important;
+    }
+}
