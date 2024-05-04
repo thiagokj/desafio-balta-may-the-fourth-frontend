@@ -33,6 +33,9 @@ public class Planet : PlanetResume
 
     public static Planet? ConvertPlanet(PlanetDataModel? result)
     {
+        if (result is null)
+            return null;
+
         Planet planet = new Planet
         {
             Id = result.Id.ToString(),

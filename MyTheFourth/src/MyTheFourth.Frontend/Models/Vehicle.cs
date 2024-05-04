@@ -34,21 +34,24 @@ public class Vehicle : VehicleResume
 
     public static Vehicle ConvertVehicle(VehicleDataModel? result)
     {
+        if (result is null)
+            return new Vehicle();
+
         Vehicle vehicle = new Vehicle
         {
-            Id = result?.Id.ToString(),
-            Name = result?.Name,
-            Model = result?.Model,
-            Manufacturer = result?.Manufacturer,
-            CostInCredits = result?.CostInCredits,
-            Length = result?.Length,
-            MaxSpeed = result?.MaxSpeed,
-            Crew = result?.Crew,
-            Passengers = result?.Passengers,
-            CargoCapacity = result?.CargoCapacity,
-            Consumables = result?.Consumables,
-            Class = result?.Class,
-            Movies = result?.Movies.Select(m => new MovieResume
+            Id = result.Id.ToString(),
+            Name = result.Name,
+            Model = result.Model,
+            Manufacturer = result.Manufacturer,
+            CostInCredits = result.CostInCredits,
+            Length = result.Length,
+            MaxSpeed = result.MaxSpeed,
+            Crew = result.Crew,
+            Passengers = result.Passengers,
+            CargoCapacity = result.CargoCapacity,
+            Consumables = result.Consumables,
+            Class = result.Class,
+            Movies = result.Movies.Select(m => new MovieResume
             {
                 Id = m.Id.ToString(),
                 Title = m.Title
