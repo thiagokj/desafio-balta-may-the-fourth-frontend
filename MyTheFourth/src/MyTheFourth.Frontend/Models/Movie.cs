@@ -43,7 +43,7 @@ public class Movie : MovieResume
             OpeningCrawl = result.OpeningCrawl,
             Director = result.Director,
             Producer = result.Producer,
-            ReleaseDate = result.ReleaseDate.DateToPtBR(),
+            ReleaseDate = result.ReleaseDate.DateToPtBr(),
             Characters = result.Characters.Select(character => new CharacterResume
                 {
                     Id = character.Id.ToString(),
@@ -93,7 +93,7 @@ public class Movie : MovieResume
                 OpeningCrawl = movie.OpeningCrawl,
                 Director = movie.Director,
                 Producer = movie.Producer,
-                ReleaseDate = movie.ReleaseDate.DateToPtBR(),
+                ReleaseDate = movie.ReleaseDate.DateToPtBr(),
                 Characters = movie.Characters.Select(character => new CharacterResume
                     {
                         Id = character.Id.ToString(),
