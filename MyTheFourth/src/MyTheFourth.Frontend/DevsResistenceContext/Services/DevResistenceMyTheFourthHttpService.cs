@@ -32,7 +32,6 @@ IMyTheFourthService
             return new Character();
 
         var character = Character.ConvertCharacter(result);
-
         return character;
     }
 
@@ -50,8 +49,10 @@ IMyTheFourthService
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.PlanetsEndpoint}/{planetId}");
         var result = await response.GetContentData<PlanetDataModel>();
 
+        if (result is null)
+            return new Planet();
+        
         var planet = Planet.ConvertPlanet(result);
-
         return planet;
     }
 
@@ -75,8 +76,10 @@ IMyTheFourthService
 
         var result = await response.GetContentData<VehicleDataModel>();
 
-        var vehicle = Vehicle.ConvertVehicle(result);
+        if (result is null)
+            return new Vehicle();
 
+        var vehicle = Vehicle.ConvertVehicle(result);
         return vehicle;
     }
 
@@ -90,6 +93,7 @@ IMyTheFourthService
 
             if (result is null)
                 return new List<Character>();
+            
             var character = Character.ConvertListCharacter(result);
             return character;
         }
@@ -126,6 +130,9 @@ IMyTheFourthService
             var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.PlanetsEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
 
             var result = await response.GetContentData<PlanetListResponse>();
+
+            if (result is null)
+                return new List<Planet>();
 
             var planet = Planet.ConvertListPlanet(result);
 
@@ -170,6 +177,9 @@ IMyTheFourthService
             var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.VehiclesEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
 
             var result = await response.GetContentData<VehicleListResponse>();
+
+            if (result is null)
+                return new List<Vehicle>();
 
             var vehicle = Vehicle.ConvertListVehicle(result);
 
