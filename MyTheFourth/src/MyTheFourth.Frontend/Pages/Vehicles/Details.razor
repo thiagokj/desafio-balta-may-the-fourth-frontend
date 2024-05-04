@@ -25,12 +25,15 @@ else {
             <DetailItems LabelName="Capacidade de Carga" LabelValue="@Vehicle.CargoCapacity" />
             <DetailItems LabelName="Capacidade de Carga" LabelValue="@Vehicle.CargoCapacity" />
             <DetailItemsTitle LabelName="Filmes">
-                @{
+
+                @if (@Vehicle.Movies != null)
+                {
                     foreach (var movie in @Vehicle.Movies)
                     {
-                        <DetailItemsLink LabelValue="@movie.Title" LabelUrl="@($"/movies/{movie.Slug ?? movie.Id.ToString()}")" />
+                        <DetailItemsLink LabelValue="@movie.Title" LabelUrl="@($"/movies/{movie.Slug ?? movie.Id}")"/>
                     }
                 }
+
             </DetailItemsTitle>
         </ChildContent>
     </MainDetails>
