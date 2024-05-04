@@ -180,6 +180,7 @@ IMyTheFourthService
 
             if (result is null)
                 return new List<Vehicle>();
+            
 
             var vehicle = Vehicle.ConvertListVehicle(result);
 
