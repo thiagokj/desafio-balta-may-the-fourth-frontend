@@ -1,0 +1,49 @@
+@page "/starships/{starshipId}"
+
+@inject IStarshipsService StarShipsService
+@attribute [StreamRendering]
+
+@if(Starship == null) {
+    <StarWarsLoader Text="Carregando..." />
+}
+else {
+    <ModuleNavigation CurrentPage="@Starship.Name" Module="EPagesNavigationsKey.Starships" />
+    <MainDetails Name="@Starship.Name">
+        <ChildContent>
+            <DetailItems LabelName="Modelo" LabelValue="@Starship.Model" />
+            <DetailItems LabelName="Fabricante" LabelValue="@Starship.Manufacturer" />
+            <DetailItems LabelName="Custo (Em créditos)" LabelValue="@Starship.CostInCredits" />
+            <DetailItems LabelName="Comprimento" LabelValue="@Starship.Length" />
+            <DetailItems LabelName="Velocidade Máxima" LabelValue="@Starship.MaxSpeed" />
+            <DetailItems LabelName="Tripulação" LabelValue="@Starship.Crew" />
+            <DetailItems LabelName="Passageiros" LabelValue="@Starship.Passengers" />
+            <DetailItems LabelName="Capacidade de Carga" LabelValue="@Starship.CargoCapacity" />
+            <DetailItems LabelName="Classificação do Hiperdrive" LabelValue="@Starship.HyperdriveRating" />
+            <DetailItems LabelName="MGLT" LabelValue="@Starship.Mglt" />
+            <DetailItems LabelName="Consumíveis" LabelValue="@Starship.Consumables" />
+            <DetailItems LabelName="Classe" LabelValue="@Starship.Class" />
+
+            <DetailItemsTitle LabelName="Filmes">
+                @{
+                    foreach (var character in Starship.Movies)
+                    {
+                        <DetailItemsLink LabelValue="@character.Title" LabelUrl="@($"/movies/{character.Slug ?? character.Id.ToString()}")" />
+                    }
+                }
+            </DetailItemsTitle>
+        </ChildContent>
+    </MainDetails>
+
+}
+
+@code {
+    [Parameter]
+    public string starshipId {get; set;} = null!;
+
+    private Starship? Starship = null;
+
+    protected override async Task OnInitializedAsync() {
+
+       Starship = await StarShipsService.GetStarshipAsync(starshipId);
+    }
+}    

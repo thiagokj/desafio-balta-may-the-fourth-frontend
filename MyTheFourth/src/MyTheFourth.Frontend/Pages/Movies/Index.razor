@@ -1,0 +1,59 @@
+@page "/movies"
+
+@inject IMoviesService MoviesService
+@attribute [StreamRendering]
+
+<ModuleNavigation CurrentPage="Filmes" Module="EPagesNavigationsKey.Home" />
+
+@if(Movies == null) 
+{
+    <StarWarsLoader Text="Carregando..." />
+}
+else 
+{
+    <Catalog>
+        @{
+            if (Movies == null || !Movies.Any())
+                @Constants.ErrorMessages.NoContent
+            else
+            {
+                @foreach (var movie in Movies) 
+                {
+                    <CatalogDetail ImgUrl="@movie.ImgUrl" Name="@movie.Title" Link="@($"movies/{movie.Slug ?? movie.Id.ToString()}")"/>
+                }
+            }
+        }
+    </Catalog>
+
+    <Pagination ActivePageNumber="@CurPage"
+                TotalPages="15"
+                PageChanged="OnPageChangedAsync"
+                DisplayPages="5"
+                FirstLinkIcon="IconName.ChevronDoubleLeft"
+                PreviousLinkIcon="IconName.ChevronLeft"
+                NextLinkIcon="IconName.ChevronRight"
+                LastLinkIcon="IconName.ChevronDoubleRight" />
+
+}
+
+@code {
+    private IEnumerable<Movie>? Movies;
+    private int CurPage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ShowPage();
+    }
+
+    protected async Task ShowPage()
+    {
+        Movies = await MoviesService.ListMoviesAsync(CurPage);
+    }
+
+    private async Task OnPageChangedAsync(int newPageNumber)
+    {
+        await Task.Run(() => { CurPage = newPageNumber; });
+        await ShowPage();
+        return;
+    }
+}    

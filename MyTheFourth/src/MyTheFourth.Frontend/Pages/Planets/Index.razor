@@ -1,0 +1,58 @@
+@page "/planets"
+
+@inject IPlanetsService planetService
+@attribute [StreamRendering]
+
+<ModuleNavigation CurrentPage="Planetas" Module="EPagesNavigationsKey.Home" />
+
+@if (Planets == null)
+{
+    <StarWarsLoader Text="Carregando..." />
+}
+else
+{
+    <Catalog>
+        @{
+            if (Planets == null || !Planets.Any())
+                @Constants.ErrorMessages.NoContent
+            else
+            {
+                @foreach (var planets in Planets)
+                {
+                    <CatalogDetail ImgUrl="@planets.ImgUrl" Name="@planets.Name" Link="@($"planets/{planets.Slug ?? planets.Id.ToString()}")" />
+                }
+            }
+        }
+    </Catalog>
+
+    <Pagination ActivePageNumber="@CurPage"
+                TotalPages="15"
+                PageChanged="OnPageChangedAsync"
+                DisplayPages="5"
+                FirstLinkIcon="IconName.ChevronDoubleLeft"
+                PreviousLinkIcon="IconName.ChevronLeft"
+                NextLinkIcon="IconName.ChevronRight"
+                LastLinkIcon="IconName.ChevronDoubleRight" />
+}
+
+@code {
+    private IEnumerable<PlanetResume>? Planets = null;
+    private int CurPage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ShowPage();
+    }
+
+    protected async Task ShowPage()
+    {
+        Planets = await planetService.ListPlanetsAsync(CurPage);
+    }
+
+    private async Task OnPageChangedAsync(int newPageNumber)
+    {
+        await Task.Run(() => { CurPage = newPageNumber; });
+        await ShowPage();
+        return;
+    }
+}

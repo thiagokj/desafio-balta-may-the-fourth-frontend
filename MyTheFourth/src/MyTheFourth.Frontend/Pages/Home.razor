@@ -1,0 +1,42 @@
+﻿@page "/"
+
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IJSRuntime JSRuntime
+@inject IBreadcrumbItemService BreadcrumbItemService
+@inject NavigationManager NavigationManager
+@inject ToastService ToastService
+@attribute [StreamRendering]
+
+<ModuleNavigation CurrentPage="Início" Module="EPagesNavigationsKey.None" />
+<h1>Welcome my friend</h1>
+
+@code {
+    private bool showToastInstallPWA;
+
+    protected override void OnInitialized()
+    {
+        BreadcrumbItemService.UpdateBreadcrumbs(new BreadcrumbItem { Text = "Home", Href = "/" },
+            new BreadcrumbItem { Text = "Docs", Href = "/docs" },
+            new BreadcrumbItem { Text = "Breadcrumb", IsCurrentPage = true });
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        showToastInstallPWA = await localStorage.GetItemAsync<bool>("toastInstallPWA");
+        
+        if (firstRender && !showToastInstallPWA)
+        {
+            showToastInstallPWA = true;
+
+            // Armazena que a operação foi executada no localStorage
+            await localStorage.SetItemAsync("toastInstallPWA", true);
+
+            var isStandalone = await JSRuntime.InvokeAsync<bool>("isStandalone");
+
+            if (!isStandalone)
+            {
+                ToastService.Notify(new ToastMessage(ToastType.Primary, "O Star quack pode ser instalado localmente"));
+            }
+        }
+    }
+}
