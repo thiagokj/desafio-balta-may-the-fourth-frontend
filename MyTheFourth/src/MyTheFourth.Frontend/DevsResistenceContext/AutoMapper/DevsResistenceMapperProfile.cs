@@ -31,13 +31,9 @@ public class DevsResistenceMapperProfile : Profile
         CreateMap<PlanetDataModel, Planet>()
        .IncludeBase<PlanetDataModel, PlanetResume>();
 
-        CreateMap<CharacterDataModel, CharacterResume>();
+        //CreateMap<CharacterDataModel, CharacterResume>();
 
-        CreateMap<CharacterDataModel, Character>()
-        .IncludeBase<CharacterDataModel, CharacterResume>();
-
-
-
-
+        //CreateMap<CharacterDataModel, Character>()
+        //.IncludeBase<CharacterDataModel, CharacterResume>();
     }
 }
