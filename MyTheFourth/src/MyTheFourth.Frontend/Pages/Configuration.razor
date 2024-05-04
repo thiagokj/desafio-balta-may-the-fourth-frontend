@@ -1,0 +1,73 @@
+@page "/configuration"
+@using MyTheFourth.Frontend.Constants
+@using MyTheFourth.Frontend.Configuration
+@using System.ComponentModel.DataAnnotations
+
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager navigationManager
+@inject IApiConfigurationServiceCollection apiConfigurationCollection
+@inject ToastService ToastService
+
+<ModuleNavigation CurrentPage="Configurações" Module="EPagesNavigationsKey.Home" />
+
+<section class="team-single">
+    <div class="row">
+        <div class="col">
+            <div class="team-single-text padding-50px-left sm-no-padding-left">
+                <h1 class="font-size38 sm-font-size32 xs-font-size30">Painel de configuração</h1>
+
+                <p>Aqui você pode escolher modificar qual a api de backend que fornecer os dados.</p>
+                <div class="contact-info-section margin-40px-tb mt-4">
+                    <EditForm Model="Model" OnValidSubmit="Submit" FormName="SelectionBackend">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Apis Disponíveis:</label>
+                            <InputSelect class="form-select form-select-lg" @bind-Value="Model.Id">
+                                @foreach(var backend in options) {
+                                <option value="@backend.ServiceId">@backend.Name</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success float-right">Salvar</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    [SupplyParameterFromForm]
+    public SelectionModel Model { get; set; } = new();
+
+    private List<ApiConfiguration> options = new();
+    
+
+    protected override async Task OnInitializedAsync() { 
+        options = apiConfigurationCollection.ListAllowedBackends().ToList();
+
+        Model.Id = await  localStorage.GetItemAsync<string>(LocalStoragePropertyNaming.BackendServiceDataName);
+    }
+
+    private async Task Submit()
+    {
+        await localStorage.SetItemAsync<string>(LocalStoragePropertyNaming.BackendServiceDataName, Model.Id!);
+
+        Model.SelectedName = options.FirstOrDefault(o => o.ServiceId == Model.Id)!.Name;
+        
+        ToastService.Notify(new ToastMessage(ToastType.Success, $"Configurado Backend: {Model.SelectedName}. Aguarde..."));
+
+        await Task.Delay(3000);
+        
+        await Task.Run(() => navigationManager.Refresh());
+    }
+
+    public class SelectionModel
+    {
+        [Required]
+        public string? Id { get; set; }
+        public string? SelectedName;
+    }
+}

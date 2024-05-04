@@ -1,0 +1,58 @@
+﻿@page "/planets/{planetId}"
+
+@inject IPlanetsService PlanetsService
+@attribute [StreamRendering]
+
+
+@if (Planet == null)
+{
+    <StarWarsLoader Text="Carregando..." />
+}
+else
+{
+    <ModuleNavigation CurrentPage="@Planet.Name" Module="EPagesNavigationsKey.Planets" />
+    <MainDetails Name="@Planet.Name">
+        <ChildContent>
+            <DetailItems LabelName="Clima" LabelValue="@Planet.Climate" />
+            <DetailItems LabelName="Diaetro" LabelValue="@Planet.Diameter" />
+            <DetailItems LabelName="Período Rotação" LabelValue="@Planet.RotationPeriod" />
+            <DetailItems LabelName="Período Orbital" LabelValue="@Planet.OrbitalPeriod" />
+            <DetailItems LabelName="Gravidade" LabelValue="@Planet.Gravity" />
+            <DetailItems LabelName="Terreno" LabelValue="@Planet.Terrain" />
+            <DetailItems LabelName="Superfície de água" LabelValue="@Planet.SurfaceWater" />
+            <DetailItems LabelName="População" LabelValue="@Planet.Population" />
+
+             <DetailItemsTitle LabelName="Personagens">
+                @{
+                    foreach (var character in Planet.Characters)
+                    {
+                        <DetailItemsLink LabelValue="@character.Name" LabelUrl="@($"/characters/{character.Slug ?? character.Id.ToString()}")" />
+                    }
+                }
+            </DetailItemsTitle>
+            <p></p>
+            <DetailItemsTitle LabelName="Filmes">
+                @{
+                    foreach (var movie in Planet.Movies)
+                    {
+                        <DetailItemsLink LabelValue="@movie.Title" LabelUrl="@($"/movies/{movie.Slug ?? movie.Id.ToString()}")" />
+                    }
+                }
+            </DetailItemsTitle>
+
+        </ChildContent>
+    </MainDetails>
+}
+
+@code {
+    [Parameter]
+    public string planetId { get; set; } = null!;
+
+    private Planet? Planet = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Planet = await PlanetsService.GetPlanetAsync(planetId);
+    }
+}

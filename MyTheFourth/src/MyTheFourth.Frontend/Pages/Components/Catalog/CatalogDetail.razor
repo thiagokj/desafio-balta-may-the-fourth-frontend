@@ -1,0 +1,28 @@
+@using MyTheFourth.Frontend.Constants
+
+<div class="col-auto">
+    <Card Class="mb-4 mx-2" Style="width:12rem;">
+        <img src="@ImgUrl" alt="image">
+        <CardBody>
+            <a href="@Link">
+                <CardTitle>@Name</CardTitle>
+            </a>
+        </CardBody>
+    </Card>
+</div>
+
+
+@code {
+    protected override void OnParametersSet()
+    {
+        if (string.IsNullOrEmpty(ImgUrl))
+            ImgUrl = @CatalogImagesUrl.DefaultImageUrl;
+    }
+
+    [Parameter]
+    public string ImgUrl { get; set; } = null!;
+    [Parameter]
+    public string Name { get; set; } = string.Empty;
+    [Parameter]
+    public string? Link { get; set; }
+}

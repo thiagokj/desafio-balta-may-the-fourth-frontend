@@ -1,0 +1,59 @@
+﻿@page "/characters"
+
+@inject ICharactersService CharactersService
+@attribute [StreamRendering]
+
+<ModuleNavigation CurrentPage="Personagens" Module="EPagesNavigationsKey.Home" />
+
+@if (Characters == null)
+{
+    <StarWarsLoader Text="Carregando..." />
+}
+else
+{
+    <Catalog>
+        @{
+            if (Characters == null || !Characters.Any())
+                @Constants.ErrorMessages.NoContent
+            else
+            {
+                @foreach (var character in Characters)
+                {
+                    <CatalogDetail ImgUrl="@character.ImgUrl" Name="@character.Name" Link="@($"characters/{character.Slug ?? character.Id.ToString()}")" />
+                }
+            }
+        }
+    </Catalog>
+
+    <Pagination ActivePageNumber="@CurPage"
+                TotalPages="15"
+                PageChanged="OnPageChangedAsync"
+                DisplayPages="5"
+                FirstLinkIcon="IconName.ChevronDoubleLeft"
+                PreviousLinkIcon="IconName.ChevronLeft"
+                NextLinkIcon="IconName.ChevronRight"
+                LastLinkIcon="IconName.ChevronDoubleRight" />
+
+}
+
+@code {
+    private IEnumerable<CharacterResume>? Characters = null;
+    private int CurPage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ShowPage();
+    }
+
+    protected async Task ShowPage()
+    {
+        Characters = await CharactersService.ListCharactersAsync(CurPage);
+    }
+
+    private async Task OnPageChangedAsync(int newPageNumber)
+    {
+        await Task.Run(() => { CurPage = newPageNumber; });
+        await ShowPage();
+        return;
+    }
+}

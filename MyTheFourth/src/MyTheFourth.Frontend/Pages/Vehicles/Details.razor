@@ -1,0 +1,46 @@
+@page "/vehicles/{vehicleId}"
+
+@inject IVehiclesService VehiclesService
+@attribute [StreamRendering]
+
+@if(Vehicle == null) {
+    <StarWarsLoader Text="Carregando..." />
+}
+else {
+
+    <ModuleNavigation CurrentPage="@Vehicle.Name" Module="EPagesNavigationsKey.Vehicles" />
+    <MainDetails Name="@Vehicle.Name">
+        <ChildContent>
+            <DetailItems LabelName="Modelo" LabelValue="@Vehicle.Model" />
+            <DetailItems LabelName="Fabricante" LabelValue="@Vehicle.Manufacturer" />
+            <DetailItems LabelName="Custo (Em créditos)" LabelValue="@Vehicle.CostInCredits" />
+            <DetailItems LabelName="Comprimento" LabelValue="@Vehicle.Length" />
+            <DetailItems LabelName="Velocidade Máxima" LabelValue="@Vehicle.MaxSpeed" />
+            <DetailItems LabelName="Tripulação" LabelValue="@Vehicle.Crew" />
+            <DetailItems LabelName="Passageiros" LabelValue="@Vehicle.Passengers" />
+            <DetailItems LabelName="Capacidade de Carga" LabelValue="@Vehicle.CargoCapacity" />
+            <DetailItems LabelName="Consumiveis" LabelValue="@Vehicle.Consumables" />
+            <DetailItems LabelName="Classe" LabelValue="@Vehicle.Class" />
+            <DetailItems LabelName="Capacidade de Carga" LabelValue="@Vehicle.CargoCapacity" />
+            <DetailItems LabelName="Capacidade de Carga" LabelValue="@Vehicle.CargoCapacity" />
+            <DetailItems LabelName="Capacidade de Carga" LabelValue="@Vehicle.CargoCapacity" />
+            <DetailItemsTitle LabelName="Filmes">
+                @{
+                    foreach (var movie in @Vehicle.Movies)
+                    {
+                        <DetailItemsLink LabelValue="@movie.Title" LabelUrl="@($"/movies/{movie.Slug ?? movie.Id.ToString()}")" />
+                    }
+                }
+            </DetailItemsTitle>
+        </ChildContent>
+    </MainDetails>
+}
+
+@code {
+    [Parameter]
+    public string vehicleId { get; set; } = null!;
+
+    private Vehicle? Vehicle { get; set; }
+
+    protected override async Task OnInitializedAsync() => Vehicle = await VehiclesService.GetVehicleAsync(vehicleId);
+}    

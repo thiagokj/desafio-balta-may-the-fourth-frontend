@@ -1,0 +1,59 @@
+@page "/vehicles"
+
+@inject IVehiclesService VehiclesService
+@attribute [StreamRendering]
+
+<ModuleNavigation CurrentPage="Veículos" Module="EPagesNavigationsKey.Home" />
+
+@if(Vehicles == null) 
+{
+    <StarWarsLoader Text="Carregando..." />
+}
+else 
+{
+    <Catalog>
+        @{
+            if (Vehicles == null || !Vehicles.Any())
+                @Constants.ErrorMessages.NoContent
+            else
+            {
+                foreach (var vehicle in Vehicles) 
+                {
+                    <CatalogDetail ImgUrl="@vehicle.ImgUrl" Name="@vehicle.Name" Link="@($"vehicles/{vehicle.Slug ?? vehicle.Id.ToString()}")"/>
+                }
+            }
+        }
+    </Catalog>
+
+    <Pagination ActivePageNumber="@CurPage"
+                TotalPages="15"
+                PageChanged="OnPageChangedAsync"
+                DisplayPages="5"
+                FirstLinkIcon="IconName.ChevronDoubleLeft"
+                PreviousLinkIcon="IconName.ChevronLeft"
+                NextLinkIcon="IconName.ChevronRight"
+                LastLinkIcon="IconName.ChevronDoubleRight" />
+
+}
+
+@code {
+    private IEnumerable<Vehicle>? Vehicles = null;
+    private int CurPage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ShowPage();
+    }
+
+    protected async Task ShowPage()
+    {
+        Vehicles = await VehiclesService.ListVehiclesAsync(CurPage);
+    }
+
+    private async Task OnPageChangedAsync(int newPageNumber)
+    {
+        await Task.Run(() => { CurPage = newPageNumber; });
+        await ShowPage();
+        return;
+    }
+}    

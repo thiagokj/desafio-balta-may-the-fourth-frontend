@@ -1,0 +1,27 @@
+﻿@using MyTheFourth.Frontend.Layout.Navigation
+@inherits LayoutComponentBase
+
+<div class="wrapper">
+    <div class="container-fluid">
+        <Navbar/>
+        
+        <main class="col-sm min-h-100">
+            <article class="container-fluid d-flex flex-column px-2 gap-2 pb-2">
+                @* TODO: Fazer os breadcrumb de cada tela  *@
+                <MainBreadcrumb/>
+
+                <div class="row container-fluid justify-content-center py-4">
+                    @Body
+                </div>
+
+            </article>
+        </main>
+
+        <Footer/>            
+    </div>
+</div>
+
+<div class="stars"></div>
+
+<Toasts class="p-3" AutoHide="true" Delay="5000" Placement="ToastsPlacement.TopRight"/>
+

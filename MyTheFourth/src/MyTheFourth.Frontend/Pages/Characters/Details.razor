@@ -1,0 +1,53 @@
+﻿@page "/characters/{characterId}"
+
+@inject ICharactersService CharactersService
+@attribute [StreamRendering]
+
+@if (Character == null)
+{
+    <StarWarsLoader Text="Carregando..." />
+}
+
+else
+{
+    <ModuleNavigation CurrentPage="@Character.Name" Module="EPagesNavigationsKey.Characters" />
+    <MainDetails Name="@Character.Name">
+        <ChildContent>
+            <DetailItems LabelName="Data de Aniversário" LabelValue="@Character.BirthYear" />
+            @if(@Character.Planet is not null) {
+            <DetailItems LabelName="Planeta" LabelValue="@Character.Planet.Name" />
+            }
+            <DetailItems LabelName="Gênero" LabelValue="@Character.Gender" />
+            <DetailItems LabelName="Altura" LabelValue="@Character.Height" />
+            <DetailItems LabelName="Largura" LabelValue="@Character.Weight" />
+            <DetailItems LabelName="Cor de Cabelo" LabelValue="@Character.HairColor" />
+            <DetailItems LabelName="Cor de Pele" LabelValue="@Character.SkinColor" />
+            <DetailItems LabelName="Cor de Olhos" LabelValue="@Character.EyeColor" />
+
+            <DetailItemsTitle LabelName="Filmes">
+                @{
+                    foreach (var character in Character.Movies)
+                    {
+                        <DetailItemsLink LabelValue="@character.Title" LabelUrl="@($"/movies/{character.Slug ?? character.Id.ToString()}")" />
+                    }
+                }
+            </DetailItemsTitle>
+          
+        </ChildContent>
+    </MainDetails>
+}
+
+
+@code {
+    [Parameter]
+    public string characterId { get; set; } = null!;
+
+    private Character? Character = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Character = await CharactersService.GetCharacterAsync(characterId);
+        StateHasChanged();
+    }
+}
