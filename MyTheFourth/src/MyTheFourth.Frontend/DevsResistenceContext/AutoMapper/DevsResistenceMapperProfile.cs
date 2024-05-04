@@ -16,10 +16,10 @@ public class DevsResistenceMapperProfile : Profile
         CreateMap<MovieDataModel, Movie>()
         .IncludeBase<MovieDataModel, MovieResume>();
 
-        CreateMap<StarshipDataModel, StarshipResume>();
+        //CreateMap<StarshipDataModel, StarshipResume>();
 
-        CreateMap<StarshipDataModel, Starship>()
-        .IncludeBase<StarshipDataModel, StarshipResume>();
+        //CreateMap<StarshipDataModel, Starship>()
+        //.IncludeBase<StarshipDataModel, StarshipResume>();
 
         CreateMap<VehicleDataModel, VehicleResume>();
 

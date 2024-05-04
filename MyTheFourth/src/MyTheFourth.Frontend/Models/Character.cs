@@ -28,7 +28,6 @@ public class Character : CharacterResume
         Movies = new List<MovieResume>();
     }
 
-
     public static Character ConvertCharacter(CharacterDataModel result)
     {
         Character character = new Character
@@ -63,7 +62,6 @@ public class Character : CharacterResume
         };
         return character;
     }
-
     //Mapeando como Response.
     public static CharacterListResponse ConvertListResponseCharacter(CharacterListResponse result)
     {
@@ -96,8 +94,6 @@ public class Character : CharacterResume
         }
         return new CharacterListResponse();
     }
-
-
     public static List<Character> ConvertListCharacter(CharacterListResponse result)
     {
         if (result.Results != null)
@@ -136,6 +132,4 @@ public class Character : CharacterResume
         }
         return new List<Character>();
     }
-
-
 }
