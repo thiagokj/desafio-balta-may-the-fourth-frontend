@@ -36,8 +36,8 @@ public class Movie : MovieResume
         Movie movie = new Movie()
         {
             Id = result.Id.ToString(),
-            ImgUrl = string.Empty,
-            Slug = string.Empty,
+            //ImgUrl = string.Empty,
+            //Slug = string.Empty,
             Title = result.Title,
             Episode = result.Episode,
             OpeningCrawl = result.OpeningCrawl,
@@ -47,29 +47,29 @@ public class Movie : MovieResume
             Characters = result.Characters.Select(character => new CharacterResume
                 {
                     Id = character.Id.ToString(),
-                    ImgUrl = string.Empty,
-                    Slug = string.Empty,
+                    //ImgUrl = string.Empty,
+                    //Slug = string.Empty,
                     Name = character.Name,
                 }).ToList(),
             Planets = result.Planets.Select(planet => new PlanetResume
                 {
                     Id = planet.Id.ToString(),
-                    ImgUrl = string.Empty,
-                    Slug = string.Empty,
+                    //ImgUrl = string.Empty,
+                    //Slug = string.Empty,
                     Name = planet.Name,
                 }).ToList(),
             Vehicles = result.Vehicles.Select(vehicle => new VehicleResume
                 {
                     Id = vehicle.Id.ToString(),
-                    ImgUrl = string.Empty,
-                    Slug = string.Empty,
+                    //ImgUrl = string.Empty,
+                    //Slug = string.Empty,
                     Name = vehicle.Name,
                 }).ToList(),
             Starships = result.Starships.Select(starship => new StarshipResume
                 {
                     Id = starship.Id.ToString(),
-                    ImgUrl = string.Empty,
-                    Slug = string.Empty,
+                    //ImgUrl = string.Empty,
+                    //Slug = string.Empty,
                     Name = starship.Name,
                 }).ToList(),
         };
@@ -86,8 +86,8 @@ public class Movie : MovieResume
             result.Results.Select(movie => new Movie
             {
                 Id = movie.Id.ToString(),
-                ImgUrl = string.Empty,
-                Slug = string.Empty,
+                //ImgUrl = string.Empty,
+                //Slug = string.Empty,
                 Title = movie.Title,
                 Episode = movie.Episode,
                 OpeningCrawl = movie.OpeningCrawl,
@@ -97,29 +97,29 @@ public class Movie : MovieResume
                 Characters = movie.Characters.Select(character => new CharacterResume
                     {
                         Id = character.Id.ToString(),
-                        ImgUrl = string.Empty,
-                        Slug = string.Empty,
+                        //ImgUrl = string.Empty,
+                        //Slug = string.Empty,
                         Name = character.Name,
                     }).ToList(),
                 Planets = movie.Planets.Select(planet => new PlanetResume
                     {
                         Id = planet.Id.ToString(),
-                        ImgUrl = string.Empty,
-                        Slug = string.Empty,
+                        //ImgUrl = string.Empty,
+                        //Slug = string.Empty,
                         Name = planet.Name,
                     }).ToList(),
                 Vehicles = movie.Vehicles.Select(vehicle => new VehicleResume
                     {
                         Id = vehicle.Id.ToString(),
-                        ImgUrl = string.Empty,
-                        Slug = string.Empty,
+                        //ImgUrl = string.Empty,
+                        //Slug = string.Empty,
                         Name = vehicle.Name,
                     }).ToList(),
                 Starships = movie.Starships.Select(starship => new StarshipResume
                     {
                         Id = starship.Id.ToString(),
-                        ImgUrl = string.Empty,
-                        Slug = string.Empty,
+                        //ImgUrl = string.Empty,
+                        //Slug = string.Empty,
                         Name = starship.Name,
                     }).ToList(),
             }).ToList();
