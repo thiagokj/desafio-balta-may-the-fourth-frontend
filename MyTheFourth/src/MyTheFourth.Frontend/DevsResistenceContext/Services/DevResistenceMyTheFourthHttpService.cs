@@ -72,7 +72,9 @@ IMyTheFourthService
 
         var result = await response.GetContentData<VehicleDataModel>();
 
-        return result is not null ? _mapper.Map<Vehicle>(result) : default!;
+        var vehicle = Vehicle.ConvertVehicle(result);
+
+        return vehicle;
     }
 
     public async Task<IEnumerable<Character>> ListCharactersAsync(int? page, int? pageSize)
@@ -163,8 +165,9 @@ IMyTheFourthService
 
             var result = await response.GetContentData<VehicleListResponse>();
 
-            return result?.Results?.Any() is true ? _mapper.Map<IEnumerable<Vehicle>>(result.Results) : Enumerable.Empty<Vehicle>();
+            var vehicle = Vehicle.ConvertListVehicle(result);
 
+            return vehicle;
         }
         catch (Exception ex)
         {
