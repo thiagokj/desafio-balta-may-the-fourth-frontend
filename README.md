@@ -37,8 +37,5 @@ Desenvolvimento de um App Web completo, fornecendo recursos como criação, leit
 * Networking
 * Muito conhecimento técnico
 
-## 🧪 Como testar o projeto
-[DESCREVER COMO EXECUTAR O PROJETO]
-
 # 💜 Participe
 Quer participar dos próximos desafios? Junte-se a [maior comunidade .NET do Brasil 🇧🇷 💜](https://balta.io/discord)
