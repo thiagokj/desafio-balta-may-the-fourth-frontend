@@ -48,7 +48,6 @@ IMyTheFourthService
     public async Task<Planet?> GetPlanetAsync(string planetId)
     {
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.PlanetsEndpoint}/{planetId}");
-
         var result = await response.GetContentData<PlanetDataModel>();
 
         var planet = Planet.ConvertPlanet(result);
@@ -59,10 +58,14 @@ IMyTheFourthService
     public async Task<Starship?> GetStarshipAsync(string starshipId)
     {
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.StarshipsEndpoint}/{starshipId}");
-
         var result = await response.GetContentData<StarshipDataModel>();
 
-        return result is not null ? _mapper.Map<Starship>(result) : default!;
+        if (result is null)
+            return new Starship();
+
+        var starship = Starship.ConvertStarship(result);
+
+        return starship;
     }
 
     public async Task<Vehicle?> GetVehicleAsync(string vehicleId)
@@ -85,9 +88,7 @@ IMyTheFourthService
 
             if (result is null)
                 return new List<Character>();
-
             var character = Character.ConvertListCharacter(result);
-
             return character;
         }
         catch (Exception ex)
@@ -144,8 +145,13 @@ IMyTheFourthService
 
             var result = await response.GetContentData<StarshipListResponse>();
 
-            return result?.Results?.Any() is true ? _mapper.Map<IEnumerable<Starship>>(result.Results) : Enumerable.Empty<Starship>();
+            if (result is null)
+                return new List<Starship>();
 
+            var starship = Starship.ConvertListStarship(result);
+
+            return starship;
+            
         }
         catch (Exception ex)
         {
