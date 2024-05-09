@@ -1,4 +1,3 @@
-using AutoMapper;
 using MyTheFourth.Frontend.Constants;
 using MyTheFourth.Frontend.DevsResistenceContext.Constants;
 using MyTheFourth.Frontend.DevsResistenceContext.Models;
@@ -12,12 +11,10 @@ public class DevResistenceMyTheFourthHttpService :
 IMyTheFourthService
 {
     private readonly HttpClient _client;
-    private readonly IMapper _mapper;
 
-    public DevResistenceMyTheFourthHttpService(HttpClient client, IMapper mapper)
+    public DevResistenceMyTheFourthHttpService(HttpClient client)
     {
         _client = client;
-        _mapper = mapper;
     }
 
     public string ServiceId => BackendServicesIdentifiers.DevResistence;
@@ -28,7 +25,11 @@ IMyTheFourthService
 
         var result = await response.GetContentData<CharacterDataModel>();
 
-        return result is not null ? _mapper.Map<Character>(result) : default!;
+        if (result is null)
+            return new Character();
+
+        var character = Character.ConvertCharacter(result);
+        return character;
     }
 
     public async Task<Movie?> GetMovieAsync(string movieId)
@@ -36,27 +37,33 @@ IMyTheFourthService
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.MoviesEndpoint}/{movieId}");
 
         var result = await response.GetContentData<MovieDataModel>();
-
-        return result is not null ? _mapper.Map<Movie>(result) : default!;
+        
+        return result is null ? default! : Movie.ConvertMovie(result);
     }
 
     public async Task<Planet?> GetPlanetAsync(string planetId)
     {
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.PlanetsEndpoint}/{planetId}");
-
         var result = await response.GetContentData<PlanetDataModel>();
 
-        return result is not null ? _mapper.Map<Planet>(result) : default!;
-
+        if (result is null)
+            return new Planet();
+        
+        var planet = Planet.ConvertPlanet(result);
+        return planet;
     }
 
     public async Task<Starship?> GetStarshipAsync(string starshipId)
     {
         var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.StarshipsEndpoint}/{starshipId}");
-
         var result = await response.GetContentData<StarshipDataModel>();
 
-        return result is not null ? _mapper.Map<Starship>(result) : default!;
+        if (result is null)
+            return new Starship();
+
+        var starship = Starship.ConvertStarship(result);
+
+        return starship;
     }
 
     public async Task<Vehicle?> GetVehicleAsync(string vehicleId)
@@ -66,22 +73,26 @@ IMyTheFourthService
 
         var result = await response.GetContentData<VehicleDataModel>();
 
-        return result is not null ? _mapper.Map<Vehicle>(result) : default!;
+        if (result is null)
+            return new Vehicle();
+
+        var vehicle = Vehicle.ConvertVehicle(result);
+        return vehicle;
     }
 
     public async Task<IEnumerable<Character>> ListCharactersAsync(int? page, int? pageSize)
     {
-        try
-        {
+        try {
             var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.CharacterEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
 
             var result = await response.GetContentData<CharacterListResponse>();
 
-            return result?.Results?.Any() is true ? _mapper.Map<IEnumerable<Character>>(result.Results) : Enumerable.Empty<Character>();
-
-        }
-        catch (Exception ex)
-        {
+            if (result is null)
+                return new List<Character>();
+            
+            var character = Character.ConvertListCharacter(result);
+            return character;
+        } catch (Exception ex) {
             Console.WriteLine(ex.Message);
 
         }
@@ -90,16 +101,15 @@ IMyTheFourthService
 
     public async Task<IEnumerable<Movie>> ListMoviesAsync(int? page, int? pageSize)
     {
-        try
-        {
+        try {
             var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.MoviesEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
 
             var result = await response.GetContentData<MovieListResponse>();
 
-            return result?.Results?.Any() is true ? _mapper.Map<IEnumerable<Movie>>(result.Results) : Enumerable.Empty<Movie>();
-        }
-        catch (Exception ex)
-        {
+            return (result is null || result?.Results is null || result?.Results?.Count() == 0) ? 
+                Enumerable.Empty<Movie>() : Movie.ConvertListCharacter(result!);
+
+        } catch (Exception ex) {
             Console.WriteLine(ex.Message);
 
         }
@@ -108,14 +118,17 @@ IMyTheFourthService
 
     public async Task<IEnumerable<Planet>> ListPlanetsAsync(int? page, int? pageSize)
     {
-        try
-        {
+        try {
             var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.PlanetsEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
 
             var result = await response.GetContentData<PlanetListResponse>();
 
-            return result?.Results?.Any() is true ? _mapper.Map<IEnumerable<Planet>>(result.Results) : Enumerable.Empty<Planet>();
+            if (result is null)
+                return new List<Planet>();
 
+            var planet = Planet.ConvertListPlanet(result);
+
+            return planet;
         }
         catch (Exception ex)
         {
@@ -127,14 +140,18 @@ IMyTheFourthService
 
     public async Task<IEnumerable<Starship>> ListStarshipsAsync(int? page, int? pageSize)
     {
-        try
-        {
+        try {
             var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.StarshipsEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
 
             var result = await response.GetContentData<StarshipListResponse>();
 
-            return result?.Results?.Any() is true ? _mapper.Map<IEnumerable<Starship>>(result.Results) : Enumerable.Empty<Starship>();
+            if (result is null)
+                return new List<Starship>();
 
+            var starship = Starship.ConvertListStarship(result);
+
+            return starship;
+            
         }
         catch (Exception ex)
         {
@@ -146,14 +163,17 @@ IMyTheFourthService
 
     public async Task<IEnumerable<Vehicle>> ListVehiclesAsync(int? page, int? pageSize)
     {
-        try
-        {
+        try {
             var response = await _client.GetAsync($"{MyTheFourthHttpServiceEndpoints.VehiclesEndpoint}?pageNumber={page ?? 1}&pageSize={pageSize ?? 10}");
 
             var result = await response.GetContentData<VehicleListResponse>();
 
-            return result?.Results?.Any() is true ? _mapper.Map<IEnumerable<Vehicle>>(result.Results) : Enumerable.Empty<Vehicle>();
+            if (result is null)
+                return new List<Vehicle>();
 
+            var vehicle = Vehicle.ConvertListVehicle(result);
+
+            return vehicle;
         }
         catch (Exception ex)
         {

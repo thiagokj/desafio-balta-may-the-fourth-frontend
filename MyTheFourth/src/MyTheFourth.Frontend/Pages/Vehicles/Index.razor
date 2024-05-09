@@ -3,7 +3,7 @@
 @inject IVehiclesService VehiclesService
 @attribute [StreamRendering]
 
-<ModuleNavigation CurrentPage="Veículos" Module="EPagesNavigationsKey.Home" />
+<ModuleNavigation CurrentPage="VeÃ­culos" Module="EPagesNavigationsKey.Home" />
 
 @if(Vehicles == null) 
 {
@@ -32,7 +32,8 @@ else
                 FirstLinkIcon="IconName.ChevronDoubleLeft"
                 PreviousLinkIcon="IconName.ChevronLeft"
                 NextLinkIcon="IconName.ChevronRight"
-                LastLinkIcon="IconName.ChevronDoubleRight" />
+                LastLinkIcon="IconName.ChevronDoubleRight"
+                Alignment="Alignment.Center" />
 
 }
 

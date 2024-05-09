@@ -2,23 +2,21 @@
 @inherits LayoutComponentBase
 
 <div class="wrapper">
-    <div class="container-fluid">
+    <div class="container-fluid flex-grow-1 flex-col min-h-screen">
         <Navbar/>
         
-        <main class="col-sm min-h-100">
+        <main class="col-sm flex">
             <article class="container-fluid d-flex flex-column px-2 gap-2 pb-2">
-                @* TODO: Fazer os breadcrumb de cada tela  *@
                 <MainBreadcrumb/>
 
                 <div class="row container-fluid justify-content-center py-4">
                     @Body
                 </div>
-
             </article>
         </main>
-
-        <Footer/>            
     </div>
+    
+    <Footer/>
 </div>
 
 <div class="stars"></div>

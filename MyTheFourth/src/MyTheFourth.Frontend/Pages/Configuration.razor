@@ -48,7 +48,10 @@
     protected override async Task OnInitializedAsync() { 
         options = apiConfigurationCollection.ListAllowedBackends().ToList();
 
-        Model.Id = await  localStorage.GetItemAsync<string>(LocalStoragePropertyNaming.BackendServiceDataName);
+        Model.Id = await localStorage.GetItemAsync<string>(LocalStoragePropertyNaming.BackendServiceDataName);
+        //TODO: Inicializar o sistema com as informações default populadas
+        if (string.IsNullOrEmpty(Model.Id) && (options is not null && options.Any()))
+            Model.Id = options!.First().ServiceId;
     }
 
     private async Task Submit()
@@ -59,7 +62,7 @@
         
         ToastService.Notify(new ToastMessage(ToastType.Success, $"Configurado Backend: {Model.SelectedName}. Aguarde..."));
 
-        await Task.Delay(3000);
+        await Task.Delay(2500);
         
         await Task.Run(() => navigationManager.Refresh());
     }

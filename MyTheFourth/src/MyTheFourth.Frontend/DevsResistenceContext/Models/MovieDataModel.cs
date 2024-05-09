@@ -92,37 +92,37 @@ public class VehicleDataModel
     public int Id { get; set; }
 
     [JsonPropertyName("name")]
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; } = null!;
 
     [JsonPropertyName("model")]
-    public string Model { get; set; } = null!;
+    public string? Model { get; set; } = null!;
 
     [JsonPropertyName("manufacturer")]
-    public string Manufacturer { get; set; } = null!;
+    public string? Manufacturer { get; set; } = null!;
 
     [JsonPropertyName("costInCredits")]
-    public string CostInCredits { get; set; } = null!;
+    public string? CostInCredits { get; set; } = null!;
 
     [JsonPropertyName("length")]
-    public string Length { get; set; } = null!;
+    public string? Length { get; set; } = null!;
 
     [JsonPropertyName("maxSpeed")]
-    public string MaxSpeed { get; set; } = null!;
+    public string? MaxSpeed { get; set; } = null!;
 
     [JsonPropertyName("crew")]
-    public string Crew { get; set; } = null!;
+    public string? Crew { get; set; } = null!;
 
     [JsonPropertyName("passengers")]
-    public string Passengers { get; set; } = null!;
+    public string? Passengers { get; set; } = null!;
 
     [JsonPropertyName("cargoCapacity")]
-    public string CargoCapacity { get; set; } = null!;
+    public string? CargoCapacity { get; set; } = null!;
 
     [JsonPropertyName("consumables")]
-    public string Consumables { get; set; } = null!;
+    public string? Consumables { get; set; } = null!;
 
     [JsonPropertyName("class")]
-    public string Class { get; set; } = null!;
+    public string? Class { get; set; } = null!;
 
     [JsonPropertyName("movies")]
     public List<MovieDataModel> Movies { get; set; } = new();
